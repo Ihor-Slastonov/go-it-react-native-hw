@@ -7,8 +7,10 @@ import {
   TextInput,
   Pressable,
   Image,
-  Button,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useState } from 'react';
@@ -57,79 +59,85 @@ export const RegistrationScreen = () => {
   return (
     <View style={styles.container}>
       <ImageBackground source={imageBg} style={styles.image}>
-        <View style={styles.form}>
-          {/* ---------------------- Блок Аватар ---------------------- */}
-          <View style={styles.avatar}>
-            <Image source={{ uri: avatar }} style={styles.avatarImg} />
-            {avatar ? (
-              <Pressable
-                onPress={() => {
-                  setAvatar(null);
-                }}
-              >
-                <View style={styles.removeAvatarIcon}>
-                  <AntDesign name="closecircleo" size={25} color="#E8E8E8" />
-                </View>
-              </Pressable>
-            ) : (
-              <Pressable onPress={pickImage}>
-                <View style={styles.addAvatarIcon}>
-                  <AntDesign name="pluscircleo" size={25} color="#FF6C00" />
-                </View>
-              </Pressable>
-            )}
-          </View>
-          {/* --------------------------------------------------------- */}
-
-          <Text style={styles.title}>Registration</Text>
-
-          {/* ------------- Блок инпутов и подтверждения -------------- */}
-          <View width="100%">
-            <TextInput
-              value={login}
-              onChangeText={handleSetLogin}
-              style={{ ...styles.input, marginBottom: 16 }}
-              placeholder="Login"
-              placeholderTextColor="#BDBDBD"
-            />
-            <TextInput
-              value={email}
-              onChangeText={handleSetEmail}
-              style={{ ...styles.input, marginBottom: 16 }}
-              placeholder="E-mail address"
-              placeholderTextColor="#BDBDBD"
-            />
-            <View style={styles.passwordContainer}>
-              <TextInput
-                value={password}
-                onChangeText={handleSetPassword}
-                style={styles.input}
-                placeholder="Password"
-                placeholderTextColor="#BDBDBD"
-                secureTextEntry={isSecureText}
-              />
-              <Pressable
-                onPress={() => setIsSecureText(prevState => !prevState)}
-              >
-                <Text style={styles.showText}>
-                  {isSecureText ? 'Show' : 'Hide'}
-                </Text>
-              </Pressable>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        >
+          <View style={styles.form}>
+            {/* ---------------------- Блок Аватар ---------------------- */}
+            <View style={styles.avatar}>
+              <Image source={{ uri: avatar }} style={styles.avatarImg} />
+              {avatar ? (
+                <Pressable
+                  onPress={() => {
+                    setAvatar(null);
+                  }}
+                >
+                  <View style={styles.removeAvatarIcon}>
+                    <AntDesign name="closecircleo" size={25} color="#E8E8E8" />
+                  </View>
+                </Pressable>
+              ) : (
+                <Pressable onPress={pickImage}>
+                  <View style={styles.addAvatarIcon}>
+                    <AntDesign name="pluscircleo" size={25} color="#FF6C00" />
+                  </View>
+                </Pressable>
+              )}
             </View>
-            <TouchableOpacity
-              style={styles.submitBtn}
-              activeOpacity={0.9}
-              onPress={handleSubmit}
-            >
-              <Text style={styles.submitBtnText}>Sing up</Text>
-            </TouchableOpacity>
-          </View>
-          {/* --------------------------------------------------------- */}
+            {/* --------------------------------------------------------- */}
 
-          <Pressable>
-            <Text></Text>
-          </Pressable>
-        </View>
+            <Text style={styles.title}>Registration</Text>
+
+            {/* ------------- Блок инпутов и подтверждения -------------- */}
+            <View width="100%">
+              <TextInput
+                value={login}
+                onChangeText={handleSetLogin}
+                style={{ ...styles.input, marginBottom: 16 }}
+                placeholder="Login"
+                placeholderTextColor="#BDBDBD"
+              />
+              <TextInput
+                value={email}
+                onChangeText={handleSetEmail}
+                style={{ ...styles.input, marginBottom: 16 }}
+                placeholder="E-mail address"
+                placeholderTextColor="#BDBDBD"
+              />
+              <View style={styles.passwordContainer}>
+                <TextInput
+                  value={password}
+                  onChangeText={handleSetPassword}
+                  style={styles.input}
+                  placeholder="Password"
+                  placeholderTextColor="#BDBDBD"
+                  secureTextEntry={isSecureText}
+                />
+                <Pressable
+                  onPress={() => setIsSecureText(prevState => !prevState)}
+                >
+                  <Text style={styles.showText}>
+                    {isSecureText ? 'Show' : 'Hide'}
+                  </Text>
+                </Pressable>
+              </View>
+              <TouchableOpacity
+                style={styles.submitBtn}
+                activeOpacity={0.9}
+                onPress={handleSubmit}
+              >
+                <Text style={styles.submitBtnText}>Sing up</Text>
+              </TouchableOpacity>
+            </View>
+            {/* --------------------------------------------------------- */}
+
+            <Pressable>
+              <Text style={styles.afterSubmitText}>
+                Already have an account? Sign in
+              </Text>
+            </Pressable>
+          </View>
+        </KeyboardAvoidingView>
       </ImageBackground>
     </View>
   );
@@ -149,7 +157,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     paddingHorizontal: 16,
     width: '100%',
-    // height: 549,
+    height: 549,
     backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
@@ -215,6 +223,7 @@ const styles = StyleSheet.create({
     color: '#1B4371',
   },
   submitBtn: {
+    marginBottom: 16,
     paddingHorizontal: 32,
     paddingVertical: 16,
     alignItems: 'center',
@@ -225,5 +234,10 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
     fontSize: 16,
     color: '#FFFFFF',
+  },
+  afterSubmitText: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 16,
+    color: '#1B4371',
   },
 });
