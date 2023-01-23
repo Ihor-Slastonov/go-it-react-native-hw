@@ -23,6 +23,7 @@ export const RegistrationScreen = () => {
   const [login, setLogin] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isKeyboardShown, setIsKeyboardShown] = useState(false);
 
   const handleSetLogin = text => setLogin(text);
   const handleSetEmail = text => setEmail(text);
@@ -62,7 +63,9 @@ export const RegistrationScreen = () => {
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
-          <View style={styles.form}>
+          <View
+            style={{ ...styles.form, paddingBottom: isKeyboardShown ? 16 : 77 }}
+          >
             {/* ---------------------- Блок Аватар ---------------------- */}
             <View style={styles.avatar}>
               <Image source={{ uri: avatar }} style={styles.avatarImg} />
@@ -96,6 +99,8 @@ export const RegistrationScreen = () => {
                 style={{ ...styles.input, marginBottom: 16 }}
                 placeholder="Login"
                 placeholderTextColor="#BDBDBD"
+                onFocus={() => setIsKeyboardShown(true)}
+                onBlur={() => setIsKeyboardShown(false)}
               />
               <TextInput
                 value={email}
@@ -103,6 +108,8 @@ export const RegistrationScreen = () => {
                 style={{ ...styles.input, marginBottom: 16 }}
                 placeholder="E-mail address"
                 placeholderTextColor="#BDBDBD"
+                onFocus={() => setIsKeyboardShown(true)}
+                onBlur={() => setIsKeyboardShown(false)}
               />
               <View style={styles.passwordContainer}>
                 <TextInput
@@ -112,6 +119,8 @@ export const RegistrationScreen = () => {
                   placeholder="Password"
                   placeholderTextColor="#BDBDBD"
                   secureTextEntry={isSecureText}
+                  onFocus={() => setIsKeyboardShown(true)}
+                  onBlur={() => setIsKeyboardShown(false)}
                 />
                 <Pressable
                   onPress={() => setIsSecureText(prevState => !prevState)}
@@ -121,21 +130,22 @@ export const RegistrationScreen = () => {
                   </Text>
                 </Pressable>
               </View>
-              <TouchableOpacity
-                style={styles.submitBtn}
-                activeOpacity={0.9}
-                onPress={handleSubmit}
-              >
-                <Text style={styles.submitBtnText}>Sing up</Text>
-              </TouchableOpacity>
-            </View>
-            {/* --------------------------------------------------------- */}
+              <View style={{display: isKeyboardShown? 'none' : "flex"}}>
+                <TouchableOpacity
+                  style={styles.submitBtn}
+                  activeOpacity={0.9}
+                  onPress={handleSubmit}
+                >
+                  <Text style={styles.submitBtnText}>Sing up</Text>
+                </TouchableOpacity>
 
-            <Pressable>
-              <Text style={styles.afterSubmitText}>
-                Already have an account? Sign in
-              </Text>
-            </Pressable>
+                <Pressable>
+                  <Text style={styles.afterSubmitText}>
+                    Already have an account? Sign in
+                  </Text>
+                </Pressable>
+              </View>
+            </View>
           </View>
         </KeyboardAvoidingView>
       </ImageBackground>
@@ -157,7 +167,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     paddingHorizontal: 16,
     width: '100%',
-    height: 549,
+    // height: 549,
     backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
@@ -212,7 +222,6 @@ const styles = StyleSheet.create({
   },
   passwordContainer: {
     flexDirection: 'row',
-    marginBottom: 43,
   },
   showText: {
     position: 'absolute',
@@ -223,6 +232,7 @@ const styles = StyleSheet.create({
     color: '#1B4371',
   },
   submitBtn: {
+    marginTop: 43,
     marginBottom: 16,
     paddingHorizontal: 32,
     paddingVertical: 16,
@@ -239,5 +249,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
     fontSize: 16,
     color: '#1B4371',
+    textAlign: 'center',
   },
 });
