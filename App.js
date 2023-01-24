@@ -35,8 +35,8 @@ export default function App() {
 
   return (
     <>
-      {/* <RegistrationScreen /> */}
-      <LoginScreen/>
+      <RegistrationScreen />
+      {/* <LoginScreen/> */}
       <StatusBar style="auto" />
     </>
   );
