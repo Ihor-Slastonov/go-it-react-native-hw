@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import { RegistrationScreen } from './screens/RegistrationScreen/RegistrationScreen';
+import { LoginScreen } from './screens/LoginScreen/LoginScreen';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -34,7 +35,8 @@ export default function App() {
 
   return (
     <>
-      <RegistrationScreen />
+      {/* <RegistrationScreen /> */}
+      <LoginScreen/>
       <StatusBar style="auto" />
     </>
   );

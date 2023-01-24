@@ -61,9 +61,9 @@ export const RegistrationScreen = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
-        <ImageBackground source={imageBg} style={styles.image}>
+        <ImageBackground source={imageBg} style={styles.imageBg}>
           <KeyboardAvoidingView
-          // behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          behavior={Platform.OS === 'ios' ? 'padding' : ''}
           >
             <View
               style={{
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  image: {
+  imageBg: {
     flex: 1,
     resizeMode: 'cover',
     justifyContent: 'flex-end',
