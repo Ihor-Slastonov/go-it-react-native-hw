@@ -1,12 +1,15 @@
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import * as Font from 'expo-font';
-
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
-import { RegistrationScreen } from './screens/RegistrationScreen/RegistrationScreen';
-import { LoginScreen } from './screens/LoginScreen/LoginScreen';
+import { RegistrationScreen } from './screens/auth/RegistrationScreen/RegistrationScreen';
+import { LoginScreen } from './screens/auth/LoginScreen/LoginScreen';
 
 SplashScreen.preventAutoHideAsync();
+
+const AuthStack = createStackNavigator();
 
 export default function App() {
   const [isReady, setIsReady] = useState(false);
@@ -35,8 +38,12 @@ export default function App() {
 
   return (
     <>
-      {/* <RegistrationScreen /> */}
-      <LoginScreen/>
+      <NavigationContainer>
+        <AuthStack.Navigator initialRouteName='Login'>
+          <AuthStack.Screen name='Register' component={RegistrationScreen} />
+          <AuthStack.Screen name='Login' component={LoginScreen} />
+        </AuthStack.Navigator>
+      </NavigationContainer>
       <StatusBar style="auto" />
     </>
   );

@@ -14,7 +14,7 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 
-const imageBg = require('../../assets/images/auth-bg.png');
+const imageBg = require('../../../assets/images/auth-bg.png');
 
 export const LoginScreen = () => {
   const [email, setEmail] = useState('');

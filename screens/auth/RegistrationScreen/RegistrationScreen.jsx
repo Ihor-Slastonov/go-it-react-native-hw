@@ -16,7 +16,7 @@ import {
 import * as ImagePicker from 'expo-image-picker';
 import { useState, useEffect } from 'react';
 
-const imageBg = require('../../assets/images/auth-bg.png');
+const imageBg = require('../../../assets/images/auth-bg.png');
 
 export const RegistrationScreen = () => {
   const [avatar, setAvatar] = useState(null);
