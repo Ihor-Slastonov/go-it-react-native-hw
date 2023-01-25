@@ -14,7 +14,7 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const imageBg = require('../../assets/images/auth-bg.png');
 
@@ -25,6 +25,20 @@ export const RegistrationScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isKeyboardShown, setIsKeyboardShown] = useState(false);
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+      setIsKeyboardShown(true);
+    });
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      setIsKeyboardShown(false);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
 
   const handleSetLogin = text => setLogin(text);
   const handleSetEmail = text => setEmail(text);
@@ -113,8 +127,6 @@ export const RegistrationScreen = () => {
                   }}
                   placeholder="Login"
                   placeholderTextColor="#BDBDBD"
-                  onFocus={() => setIsKeyboardShown(true)}
-                  onBlur={() => setIsKeyboardShown(false)}
                 />
                 <TextInput
                   value={email}
@@ -127,8 +139,6 @@ export const RegistrationScreen = () => {
                   }}
                   placeholder="E-mail address"
                   placeholderTextColor="#BDBDBD"
-                  onFocus={() => setIsKeyboardShown(true)}
-                  onBlur={() => setIsKeyboardShown(false)}
                 />
                 <View style={styles.passwordContainer}>
                   <TextInput
@@ -142,8 +152,6 @@ export const RegistrationScreen = () => {
                     placeholder="Password"
                     placeholderTextColor="#BDBDBD"
                     secureTextEntry={isSecureText}
-                    onFocus={() => setIsKeyboardShown(true)}
-                    onBlur={() => setIsKeyboardShown(false)}
                   />
                   <Pressable
                     onPress={() => setIsSecureText(prevState => !prevState)}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   View,
   ImageBackground,
@@ -21,6 +21,20 @@ export const LoginScreen = () => {
   const [password, setPassword] = useState('');
   const [isSecureText, setIsSecureText] = useState(true);
   const [isKeyboardShown, setIsKeyboardShown] = useState(false);
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+      setIsKeyboardShown(true);
+    });
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      setIsKeyboardShown(false);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
 
   const handleSetEmail = text => setEmail(text);
   const handleSetPassword = text => setPassword(text);
@@ -46,8 +60,6 @@ export const LoginScreen = () => {
                 onChangeText={handleSetEmail}
                 placeholder="E-mail address"
                 placeholderTextColor="#BDBDBD"
-                onFocus={() => setIsKeyboardShown(true)}
-                onBlur={() => setIsKeyboardShown(false)}
                 style={{
                   ...styles.input,
                   marginBottom: 16,
@@ -68,8 +80,6 @@ export const LoginScreen = () => {
                   placeholder="Password"
                   placeholderTextColor="#BDBDBD"
                   secureTextEntry={isSecureText}
-                  onFocus={() => setIsKeyboardShown(true)}
-                  onBlur={() => setIsKeyboardShown(false)}
                 />
                 <Pressable
                   onPress={() => setIsSecureText(prevState => !prevState)}
