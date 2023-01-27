@@ -16,7 +16,7 @@ import {
 
 const imageBg = require('../../../assets/images/auth-bg.png');
 
-export const LoginScreen = () => {
+export const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSecureText, setIsSecureText] = useState(true);
@@ -94,7 +94,7 @@ export const LoginScreen = () => {
                 <TouchableOpacity style={styles.submitBtn} activeOpacity={0.9}>
                   <Text style={styles.submitBtnText}>Log in</Text>
                 </TouchableOpacity>
-                <Pressable>
+                <Pressable onPress={()=>navigation.navigate('Register')}>
                   <Text style={styles.afterSubmitText}>
                     You don't have an account? Sign up
                   </Text>

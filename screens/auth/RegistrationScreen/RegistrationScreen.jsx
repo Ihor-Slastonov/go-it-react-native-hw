@@ -18,7 +18,7 @@ import { useState, useEffect } from 'react';
 
 const imageBg = require('../../../assets/images/auth-bg.png');
 
-export const RegistrationScreen = () => {
+export const RegistrationScreen = ({navigation}) => {
   const [avatar, setAvatar] = useState(null);
   const [isSecureText, setIsSecureText] = useState(true);
   const [login, setLogin] = useState('');
@@ -170,7 +170,7 @@ export const RegistrationScreen = () => {
                     <Text style={styles.submitBtnText}>Sing up</Text>
                   </TouchableOpacity>
 
-                  <Pressable>
+                  <Pressable onPress={()=> navigation.navigate('Login')}>
                     <Text style={styles.afterSubmitText}>
                       Already have an account? Sign in
                     </Text>
