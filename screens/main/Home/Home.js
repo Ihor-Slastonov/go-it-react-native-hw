@@ -7,7 +7,7 @@ const MainTab = createBottomTabNavigator();
 
 export const Home = () => {
   return (
-    <MainTab.Navigator initialRouteName="Posts">
+      <MainTab.Navigator initialRouteName="Posts" screenOptions={{ tabBarShowLabel: false, }}>
       <MainTab.Screen name="Posts" component={PostsScreen} />
       <MainTab.Screen name="Profile" component={ProfileScreen} />
       <MainTab.Screen name="Create post" component={CreatePostScreen} />
