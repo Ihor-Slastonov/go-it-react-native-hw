@@ -18,7 +18,7 @@ import { useState, useEffect } from 'react';
 
 const imageBg = require('../../../assets/images/auth-bg.png');
 
-export const RegistrationScreen = ({navigation}) => {
+export const RegistrationScreen = ({ navigation }) => {
   const [avatar, setAvatar] = useState(null);
   const [isSecureText, setIsSecureText] = useState(true);
   const [login, setLogin] = useState('');
@@ -27,10 +27,10 @@ export const RegistrationScreen = ({navigation}) => {
   const [isKeyboardShown, setIsKeyboardShown] = useState(false);
 
   useEffect(() => {
-    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
       setIsKeyboardShown(true);
     });
-    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
       setIsKeyboardShown(false);
     });
 
@@ -55,6 +55,7 @@ export const RegistrationScreen = ({navigation}) => {
     setLogin('');
     setEmail('');
     setPassword('');
+    navigation.navigate('Home');
   };
 
   const pickImage = async () => {
@@ -77,7 +78,7 @@ export const RegistrationScreen = ({navigation}) => {
       <View style={styles.container}>
         <ImageBackground source={imageBg} style={styles.imageBg}>
           <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : ''}
+            behavior={Platform.OS === 'ios' ? 'padding' : ''}
           >
             <View
               style={{
@@ -170,7 +171,7 @@ export const RegistrationScreen = ({navigation}) => {
                     <Text style={styles.submitBtnText}>Sing up</Text>
                   </TouchableOpacity>
 
-                  <Pressable onPress={()=> navigation.navigate('Login')}>
+                  <Pressable onPress={() => navigation.navigate('Login')}>
                     <Text style={styles.afterSubmitText}>
                       Already have an account? Sign in
                     </Text>

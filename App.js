@@ -1,6 +1,5 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import * as Font from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
@@ -8,11 +7,11 @@ import { useEffect, useState } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import { RegistrationScreen } from './screens/auth/RegistrationScreen/RegistrationScreen';
 import { LoginScreen } from './screens/auth/LoginScreen/LoginScreen';
+import { Home } from './screens/main/Home/Home';
 
 SplashScreen.preventAutoHideAsync();
 
 const AuthStack = createStackNavigator();
-const MainTab = createBottomTabNavigator();
 
 export default function App() {
   const [isReady, setIsReady] = useState(false);
@@ -53,9 +52,16 @@ export default function App() {
             component={LoginScreen}
             options={{ headerShown: false }}
           />
+          <AuthStack.Screen
+            name='Home'
+            component={Home}
+            options={{ headerShown: false }}
+          />
         </AuthStack.Navigator>
       </NavigationContainer>
       <StatusBar style="auto" />
     </>
   );
 }
+
+// auth

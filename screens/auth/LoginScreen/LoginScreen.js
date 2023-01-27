@@ -91,7 +91,7 @@ export const LoginScreen = ({ navigation }) => {
               </View>
 
                 <View style={{ display: isKeyboardShown ? 'none' : 'flex' }}>
-                <TouchableOpacity style={styles.submitBtn} activeOpacity={0.9}>
+                <TouchableOpacity style={styles.submitBtn} activeOpacity={0.9} onPress={()=>navigation.navigate('Home')}>
                   <Text style={styles.submitBtnText}>Log in</Text>
                 </TouchableOpacity>
                 <Pressable onPress={()=>navigation.navigate('Register')}>
