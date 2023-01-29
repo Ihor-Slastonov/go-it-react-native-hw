@@ -1,3 +1,6 @@
+import { Pressable } from 'react-native';
+
+
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { PostsScreen } from '../PostsScreen/PostsScreen';
 import { CreatePostScreen } from '../CreatePostsScreen/CreatePostsScreen';
@@ -5,10 +8,11 @@ import { ProfileScreen } from '../ProfileScreen/ProfileScreen';
 // icons
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const MainTab = createBottomTabNavigator();
 
-export const Home = () => {
+export const Home = ({navigation}) => {
   return (
     <MainTab.Navigator
       initialRouteName="Posts"
@@ -32,11 +36,21 @@ export const Home = () => {
         name="Posts"
         component={PostsScreen}
         options={{
+          headerTitleStyle: {
+            fontSize: 17,
+            fontFamily: 'Roboto-Medium',
+            color: '#212121',
+          },
+          headerRight: () => (
+            <Pressable onPress={()=> navigation.navigate('Login')} style={{position: 'absolute', right: 16}}>
+              <MaterialIcons name="logout" size={24} color="#BDBDBD" />
+            </Pressable>
+          ),
           headerStyle: {
             borderBottomWidth: 0.3,
-            borderBottomColor: "#B3B3B3"
+            borderBottomColor: '#B3B3B3',
           },
-          headerTitleAlign: "center",
+          headerTitleAlign: 'center',
           tabBarIcon: ({ focused, size, color }) => (
             <SimpleLineIcons name="grid" size={24} color={color} />
           ),
@@ -46,11 +60,16 @@ export const Home = () => {
         name="Create post"
         component={CreatePostScreen}
         options={{
+          headerTitleStyle: {
+            fontSize: 17,
+            fontFamily: 'Roboto-Medium',
+            color: '#212121',
+          },
           headerStyle: {
             borderBottomWidth: 0.3,
-            borderBottomColor: "#B3B3B3"
+            borderBottomColor: '#B3B3B3',
           },
-          headerTitleAlign: "center",
+          headerTitleAlign: 'center',
           tabBarIcon: ({ focused, size, color }) => (
             <Feather name="plus" size={24} color={color} />
           ),
@@ -60,11 +79,16 @@ export const Home = () => {
         name="Profile"
         component={ProfileScreen}
         options={{
+          headerTitleStyle: {
+            fontSize: 17,
+            fontFamily: 'Roboto-Medium',
+            color: '#212121',
+          },
           headerStyle: {
             borderBottomWidth: 0.3,
-            borderBottomColor: "#B3B3B3"
+            borderBottomColor: '#B3B3B3',
           },
-          headerTitleAlign: "center",
+          headerTitleAlign: 'center',
           tabBarIcon: ({ focused, size, color }) => (
             <Feather name="user" size={24} color={color} />
           ),
