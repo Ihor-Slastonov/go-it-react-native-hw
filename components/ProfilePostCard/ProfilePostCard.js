@@ -40,8 +40,8 @@ const styles = StyleSheet.create({
     paddingBottom: 32,
   },
   postImage: {
+    width:"100%",
     marginBottom: 8,
-    maxWidth: '100%',
     borderRadius: 8,
     height: 240,
     resizeMode: 'cover',

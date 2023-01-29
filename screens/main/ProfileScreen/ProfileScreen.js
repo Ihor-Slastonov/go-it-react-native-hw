@@ -16,15 +16,55 @@ import { AntDesign } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 
 const POSTS = [
-    { id: '1', url: require('../../../assets/images/lake.png'), title: 'Lake', mapMark: "Ukraine" },
-    { id: '2', url: require('../../../assets/images/forest.png'), title: 'Forest', mapMark: "Ukraine" },
-    { id: '3', url: require('../../../assets/images/lake.png'), title: 'Lake', mapMark: "Ukraine" },
-    { id: '4', url: require('../../../assets/images/forest.png'), title: 'Forest', mapMark: "Ukraine" },
-    { id: '5', url: require('../../../assets/images/lake.png'), title: 'Lake', mapMark: "Ukraine" },
-    { id: '6', url: require('../../../assets/images/forest.png'), title: 'Forest', mapMark: "Ukraine" },
-    { id: '7', url: require('../../../assets/images/lake.png'), title: 'Lake', mapMark: "Ukraine" },
-    { id: '8', url: require('../../../assets/images/forest.png'), title: 'Forest', mapMark: "Ukraine" },
-  ];
+  {
+    id: '1',
+    url: require('../../../assets/images/lake.png'),
+    title: 'Lake',
+    mapMark: 'Ukraine',
+  },
+  {
+    id: '2',
+    url: require('../../../assets/images/forest.png'),
+    title: 'Forest',
+    mapMark: 'Ukraine',
+  },
+  {
+    id: '3',
+    url: require('../../../assets/images/lake.png'),
+    title: 'Lake',
+    mapMark: 'Ukraine',
+  },
+  {
+    id: '4',
+    url: require('../../../assets/images/forest.png'),
+    title: 'Forest',
+    mapMark: 'Ukraine',
+  },
+  {
+    id: '5',
+    url: require('../../../assets/images/lake.png'),
+    title: 'Lake',
+    mapMark: 'Ukraine',
+  },
+  {
+    id: '6',
+    url: require('../../../assets/images/forest.png'),
+    title: 'Forest',
+    mapMark: 'Ukraine',
+  },
+  {
+    id: '7',
+    url: require('../../../assets/images/lake.png'),
+    title: 'Lake',
+    mapMark: 'Ukraine',
+  },
+  {
+    id: '8',
+    url: require('../../../assets/images/forest.png'),
+    title: 'Forest',
+    mapMark: 'Ukraine',
+  },
+];
 const imageBg = require('../../../assets/images/auth-bg.png');
 
 export const ProfileScreen = ({ navigation }) => {
@@ -78,13 +118,19 @@ export const ProfileScreen = ({ navigation }) => {
             <MaterialIcons name="logout" size={24} color="#BDBDBD" />
           </Pressable>
           <Text style={styles.username}>Natali Romanova</Text>
-          <SafeAreaView style={{flex: 1}}>
+          <SafeAreaView style={{ flex: 1, width: '100%', marginTop: 32 }}>
             <FlatList
-             data={POSTS}
-             renderItem={({ item }) => <ProfilePostCard url={item.url} title={item.title} mapMark={item.mapMark}/>}
-             keyExtractor={item => item.id}
+              data={POSTS}
+              renderItem={({ item }) => (
+                <ProfilePostCard
+                  url={item.url}
+                  title={item.title}
+                  mapMark={item.mapMark}
+                />
+              )}
+              keyExtractor={item => item.id}
             />
-        </SafeAreaView>
+          </SafeAreaView>
         </View>
       </ImageBackground>
     </View>
