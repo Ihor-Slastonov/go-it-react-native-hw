@@ -1,9 +1,12 @@
 import { View, Text, StyleSheet } from 'react-native';
+import { SimpleLineIcons } from '@expo/vector-icons';
+
 
 export const PostsScreen = () => {
     return (
         <View style={styles.container}>
             <Text>PostsScreen</Text>
+            
         </View>
     );
 };
