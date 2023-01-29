@@ -10,7 +10,8 @@ export const PostsScreen = () => {
                     <Image source={require('../../../assets/images/avatar.png')} style={styles.avatar} />
                 </View>
                 <View>
-                    <Text>Natali Romanova</Text>
+                    <Text style={styles.username}>Natali Romanova</Text>
+                    <Text></Text>
                 </View>
             </View>
         </View>
@@ -26,11 +27,16 @@ const styles = StyleSheet.create({
     avatarContainer: {
         flexDirection: 'row',
         alignItems: 'center',
+        marginTop: 32,
     },
     avatar: {
-        marginTop: 32,
         width: 60,
         height: 60,
         borderRadius: 16,
+    },
+    username: {
+        fontFamily: 'Roboto-Medium',
+        fontSize: 13,
+        color: '#212121',
     }
 })
