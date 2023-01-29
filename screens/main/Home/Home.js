@@ -23,15 +23,20 @@ export const Home = () => {
           paddingLeft: 82,
           paddingRight: 82,
           paddingBottom: 32,
-          height: 83
+          height: 83,
         },
-        tabBarIconStyle: { color: "#212121CC" },
+        tabBarIconStyle: { color: '#212121CC' },
       }}
     >
       <MainTab.Screen
         name="Posts"
         component={PostsScreen}
         options={{
+          headerStyle: {
+            borderBottomWidth: 0.3,
+            borderBottomColor: "#B3B3B3"
+          },
+          headerTitleAlign: "center",
           tabBarIcon: ({ focused, size, color }) => (
             <SimpleLineIcons name="grid" size={24} color={color} />
           ),
@@ -41,6 +46,11 @@ export const Home = () => {
         name="Create post"
         component={CreatePostScreen}
         options={{
+          headerStyle: {
+            borderBottomWidth: 0.3,
+            borderBottomColor: "#B3B3B3"
+          },
+          headerTitleAlign: "center",
           tabBarIcon: ({ focused, size, color }) => (
             <Feather name="plus" size={24} color={color} />
           ),
@@ -50,6 +60,11 @@ export const Home = () => {
         name="Profile"
         component={ProfileScreen}
         options={{
+          headerStyle: {
+            borderBottomWidth: 0.3,
+            borderBottomColor: "#B3B3B3"
+          },
+          headerTitleAlign: "center",
           tabBarIcon: ({ focused, size, color }) => (
             <Feather name="user" size={24} color={color} />
           ),
