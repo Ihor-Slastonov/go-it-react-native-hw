@@ -1,7 +1,29 @@
-import { View, Text, StyleSheet, Image } from 'react-native';
-import { SimpleLineIcons } from '@expo/vector-icons';
+import { useState } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  FlatList,
+  SafeAreaView,
+} from 'react-native';
+
+import { PostsScreenCard } from '../../../components/PostsScreenCard/PostsScreenCard';
+
+const POSTS = [
+  { id: '1', url: require('../../../assets/images/lake.png'), title: 'Lake', mapMark: "Ivano-Frankivs'k Region, Ukraine" },
+  { id: '2', url: require('../../../assets/images/forest.png'), title: 'Forest', mapMark: "Ivano-Frankivs'k Region, Ukraine" },
+  { id: '3', url: require('../../../assets/images/lake.png'), title: 'Lake', mapMark: "Ivano-Frankivs'k Region, Ukraine" },
+  { id: '4', url: require('../../../assets/images/forest.png'), title: 'Forest', mapMark: "Ivano-Frankivs'k Region, Ukraine" },
+  { id: '5', url: require('../../../assets/images/lake.png'), title: 'Lake', mapMark: "Ivano-Frankivs'k Region, Ukraine" },
+  { id: '6', url: require('../../../assets/images/forest.png'), title: 'Forest', mapMark: "Ivano-Frankivs'k Region, Ukraine" },
+  { id: '7', url: require('../../../assets/images/lake.png'), title: 'Lake', mapMark: "Ivano-Frankivs'k Region, Ukraine" },
+  { id: '8', url: require('../../../assets/images/forest.png'), title: 'Forest', mapMark: "Ivano-Frankivs'k Region, Ukraine" },
+];
 
 export const PostsScreen = () => {
+  const [posts, setPosts] = useState(POSTS);
+
   return (
     <View style={styles.container}>
       <View style={styles.avatarContainer}>
@@ -16,6 +38,13 @@ export const PostsScreen = () => {
           <Text style={styles.userEmail}>email@example.com</Text>
         </View>
       </View>
+      <SafeAreaView style={{flex: 1}}>
+        <FlatList
+          data={posts}
+          renderItem={({ item }) => <PostsScreenCard url={item.url} title={item.title} mapMark={item.mapMark}/>}
+          keyExtractor={item => item.id}
+        />
+      </SafeAreaView>
     </View>
   );
 };
@@ -30,6 +59,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 32,
+    marginBottom: 32,
   },
   avatar: {
     width: 60,

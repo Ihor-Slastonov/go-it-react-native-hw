@@ -79,6 +79,7 @@ export const Home = ({navigation}) => {
         name="Profile"
         component={ProfileScreen}
         options={{
+          headerShown: false,
           headerTitleStyle: {
             fontSize: 17,
             fontFamily: 'Roboto-Medium',
