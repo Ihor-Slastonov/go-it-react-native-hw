@@ -51,13 +51,18 @@ export const CreatePostScreen = () => {
   const takePhoto = async () => {
     const photo = await cameraRef.takePictureAsync();
     setPhoto(photo.uri);
-    setIsPhoto(true)
+    setIsPhoto(true);
   };
+
+  const resetPhotoState = () => {
+    setIsPhoto(false)
+    setPhoto('')
+  }
 
   return (
     <View style={{ flex: 1, paddingHorizontal: 16, paddingTop: 32 }}>
       {isPhoto ? (
-        <View>
+        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
           <Image
             style={{
               width: '100%',
@@ -67,6 +72,11 @@ export const CreatePostScreen = () => {
             }}
             source={{ uri: photo }}
           />
+          <View style={{ ...styles.icnoBg, position: 'absolute' }}>
+            <TouchableOpacity onPress={resetPhotoState}>
+              <FontAwesome name="camera" size={24} color="#BDBDBD" />
+            </TouchableOpacity>
+          </View>
         </View>
       ) : (
         <Camera
