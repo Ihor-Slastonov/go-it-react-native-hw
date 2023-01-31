@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Camera, CameraType } from 'expo-camera';
 import {
   View,
   Text,
@@ -8,42 +9,124 @@ import {
   TouchableWithoutFeedback,
   Platform,
   Keyboard,
+  Button,
+  Image,
 } from 'react-native';
 
 //icons
 import { FontAwesome } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 export const CreatePostScreen = () => {
-  return (
-    <TouchableWithoutFeedback>
+  const [type, setType] = useState(CameraType.back);
+  const [permission, requestPermission] = Camera.useCameraPermissions();
+  const [cameraRef, setCameraRef] = useState(null);
+  const [isPhoto, setIsPhoto] = useState(false);
+  const [photo, setPhoto] = useState('');
+
+  if (!permission) {
+    // Camera permissions are still loading
+    return <View />;
+  }
+
+  if (!permission.granted) {
+    // Camera permissions are not granted yet
+    return (
       <View style={styles.container}>
-        <View style={styles.imageContainer}>
-          <View style={styles.icnoBg}>
-            <FontAwesome name="camera" size={24} color="#BDBDBD" />
-          </View>
-        </View>
-        <Text style={styles.loadBtn}>Load a photo</Text>
-        <View style={{ ...styles.inputContainer, marginBottom: 16 }}>
-          <TextInput
-            style={styles.inputTitle}
-            placeholder="Title..."
-            placeholderTextColor="#BDBDBD"
-          />
-        </View>
-        <View style={styles.inputContainer}>
-          <Feather name="map-pin" size={24} color="#BDBDBD" />
-          <TextInput
-            style={{ ...styles.inputTitle, marginLeft: 4 }}
-            placeholder="Location..."
-            placeholderTextColor="#BDBDBD"
-          />
-        </View>
-        <TouchableOpacity style={styles.submitBtn}>
-          <Text style={styles.submitTitle}>Post</Text>
-        </TouchableOpacity>
+        <Text style={{ textAlign: 'center' }}>
+          We need your permission to show the camera
+        </Text>
+        <Button onPress={requestPermission} title="grant permission" />
       </View>
-    </TouchableWithoutFeedback>
+    );
+  }
+
+  const toggleCameraType = () => {
+    console.log('flip');
+    setType(current =>
+      current === CameraType.back ? CameraType.front : CameraType.back
+    );
+  };
+
+  const takePhoto = async () => {
+    const photo = await cameraRef.takePictureAsync();
+    setPhoto(photo.uri)
+    console.log(uri);
+  };
+
+  return (
+    <View style={{ flex: 1, paddingHorizontal: 16, paddingTop: 32 }}>
+      {isPhoto ? (
+        <Image
+          style={{
+            width: '100%',
+            height: 240,
+            backgroundColor: 'tomato',
+            borderRadius: 8,
+          }}
+          source={(uri = { photo })}
+        />
+      ) : (
+        <Camera
+          style={styles.camera}
+          type={type}
+          ref={ref => setCameraRef(ref)}
+        >
+          <View style={styles.icnoBg}>
+            <TouchableOpacity onPress={takePhoto}>
+              <FontAwesome name="camera" size={24} color="#BDBDBD" />
+            </TouchableOpacity>
+          </View>
+          <View style={{ position: 'absolute', right: 10, bottom: 10 }}>
+            <TouchableOpacity onPress={toggleCameraType}>
+              <MaterialIcons
+                name="flip-camera-android"
+                size={24}
+                color="#BDBDBD"
+              />
+            </TouchableOpacity>
+          </View>
+        </Camera>
+      )}
+      {/* {photo && <Image
+        style={{
+          width: '100%',
+          height: 240,
+          backgroundColor: 'tomato',
+          borderRadius: 8,
+        }}
+        source={(uri = { photo })}
+      />} */}
+    </View>
+    // <TouchableWithoutFeedback>
+    //   <View style={styles.container}>
+    //     <View style={styles.imageContainer}>
+    //       <View style={styles.icnoBg}>
+    //         <FontAwesome name="camera" size={24} color="#BDBDBD" />
+    //       </View>
+    //     </View>
+    //     <Text style={styles.loadBtn}>Load a photo</Text>
+    //     <View style={{ ...styles.inputContainer, marginBottom: 16 }}>
+    //       <TextInput
+    //         style={styles.inputTitle}
+    //         placeholder="Title..."
+    //         placeholderTextColor="#BDBDBD"
+    //       />
+    //     </View>
+    //     <View style={styles.inputContainer}>
+    //       <Feather name="map-pin" size={24} color="#BDBDBD" />
+    //       <TextInput
+    //         style={{ ...styles.inputTitle, marginLeft: 4 }}
+    //         placeholder="Location..."
+    //         placeholderTextColor="#BDBDBD"
+    //       />
+    //     </View>
+    //     <TouchableOpacity style={styles.submitBtn}>
+    //       <Text style={styles.submitTitle}>Post</Text>
+    //     </TouchableOpacity>
+    //   </View>
+    // </TouchableWithoutFeedback>
   );
 };
 
@@ -53,6 +136,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     paddingHorizontal: 16,
     paddingTop: 32,
+  },
+  camera: {
+    width: '100%',
+    height: 240,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   imageContainer: {
     alignItems: 'center',
