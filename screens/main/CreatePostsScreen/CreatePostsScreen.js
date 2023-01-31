@@ -24,6 +24,8 @@ export const CreatePostScreen = () => {
   const [cameraRef, setCameraRef] = useState(null);
   const [isPhoto, setIsPhoto] = useState(false);
   const [photo, setPhoto] = useState('');
+  const [title, setTitle] = useState('')
+  const [location, setLocation] = useState('')
 
   if (!permission) {
     // Camera permissions are still loading
@@ -107,9 +109,15 @@ export const CreatePostScreen = () => {
             </View>
           </Camera>
         )}
-        <TouchableOpacity>
-          <Text style={styles.loadBtnText}>Load a photo</Text>
-        </TouchableOpacity>
+        {photo ? (
+          <TouchableOpacity>
+            <Text style={styles.loadBtnText}>Edit a photo</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity>
+            <Text style={styles.loadBtnText}>Load a photo</Text>
+          </TouchableOpacity>
+        )}
         <View style={{ ...styles.inputContainer, marginBottom: 16 }}>
           <TextInput
             style={styles.inputTitle}
