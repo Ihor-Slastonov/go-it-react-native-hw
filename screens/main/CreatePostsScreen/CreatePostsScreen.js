@@ -11,6 +11,7 @@ import {
   Keyboard,
   Button,
   Image,
+  KeyboardAvoidingView,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
@@ -27,6 +28,21 @@ export const CreatePostScreen = () => {
   const [photo, setPhoto] = useState('');
   const [title, setTitle] = useState('');
   const [location, setLocation] = useState('');
+  const [isKeyboardShown, setIsKeyboardShown] = useState(false)
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
+      setIsKeyboardShown(true);
+    });
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
+      setIsKeyboardShown(false);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
 
   if (!permission) {
     // Camera permissions are still loading
@@ -135,26 +151,27 @@ export const CreatePostScreen = () => {
             {photo ? 'Edit a photo' : 'Load a photo'}
           </Text>
         </TouchableOpacity>
-
-        <View style={{ ...styles.inputContainer, marginBottom: 16 }}>
-          <TextInput
-            value={title}
-            onChangeText={text => setTitle(text)}
-            style={styles.inputTitle}
-            placeholder="Title..."
-            placeholderTextColor="#BDBDBD"
-          />
-        </View>
-        <View style={styles.inputContainer}>
-          <Feather name="map-pin" size={24} color="#BDBDBD" />
-          <TextInput
-            value={location}
-            onChangeText={text => setLocation(text)}
-            style={{ ...styles.inputTitle, marginLeft: 4 }}
-            placeholder="Location..."
-            placeholderTextColor="#BDBDBD"
-          />
-        </View>
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : ''}>
+          <View style={{ ...styles.inputContainer, marginBottom: 16 }}>
+            <TextInput
+              value={title}
+              onChangeText={text => setTitle(text)}
+              style={styles.inputTitle}
+              placeholder="Title..."
+              placeholderTextColor="#BDBDBD"
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Feather name="map-pin" size={24} color="#BDBDBD" />
+            <TextInput
+              value={location}
+              onChangeText={text => setLocation(text)}
+              style={{ ...styles.inputTitle, marginLeft: 4 }}
+              placeholder="Location..."
+              placeholderTextColor="#BDBDBD"
+            />
+          </View>
+        </KeyboardAvoidingView>
         <TouchableOpacity
           style={{
             ...styles.submitBtn,
