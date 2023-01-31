@@ -24,8 +24,8 @@ export const CreatePostScreen = () => {
   const [cameraRef, setCameraRef] = useState(null);
   const [isPhoto, setIsPhoto] = useState(false);
   const [photo, setPhoto] = useState('');
-  const [title, setTitle] = useState('')
-  const [location, setLocation] = useState('')
+  const [title, setTitle] = useState('');
+  const [location, setLocation] = useState('');
 
   if (!permission) {
     // Camera permissions are still loading
@@ -60,6 +60,10 @@ export const CreatePostScreen = () => {
     setIsPhoto(false);
     setPhoto('');
   };
+  
+  const onSubmit = () => {
+    alert('DUDEEEEE')
+  }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -120,6 +124,8 @@ export const CreatePostScreen = () => {
         )}
         <View style={{ ...styles.inputContainer, marginBottom: 16 }}>
           <TextInput
+            value={title}
+            onChangeText={text => setTitle(text)}
             style={styles.inputTitle}
             placeholder="Title..."
             placeholderTextColor="#BDBDBD"
@@ -128,13 +134,21 @@ export const CreatePostScreen = () => {
         <View style={styles.inputContainer}>
           <Feather name="map-pin" size={24} color="#BDBDBD" />
           <TextInput
+            value={location}
+            onChangeText={text => setLocation(text)}
             style={{ ...styles.inputTitle, marginLeft: 4 }}
             placeholder="Location..."
             placeholderTextColor="#BDBDBD"
           />
         </View>
-        <TouchableOpacity style={styles.submitBtn}>
-          <Text style={styles.submitTitle}>Post</Text>
+        <TouchableOpacity
+          style={{
+            ...styles.submitBtn,
+            backgroundColor: photo ? '#FF6C00' : '#F6F6F6',
+          }}
+          onPress={onSubmit}
+        >
+          <Text style={{ ...styles.submitTitle, color: photo ? '#FFFFFF' : '#BDBDBD'}}>Post</Text>
         </TouchableOpacity>
       </View>
     </TouchableWithoutFeedback>
