@@ -55,9 +55,9 @@ export const CreatePostScreen = () => {
   };
 
   const resetPhotoState = () => {
-    setIsPhoto(false)
-    setPhoto('')
-  }
+    setIsPhoto(false);
+    setPhoto('');
+  };
 
   return (
     <View style={{ flex: 1, paddingHorizontal: 16, paddingTop: 32 }}>
@@ -67,14 +67,20 @@ export const CreatePostScreen = () => {
             style={{
               width: '100%',
               height: 240,
-              backgroundColor: 'tomato',
+              backgroundColor: '#F6F6F6',
               borderRadius: 8,
             }}
             source={{ uri: photo }}
           />
-          <View style={{ ...styles.icnoBg, position: 'absolute' }}>
+          <View
+            style={{
+              ...styles.icnoBg,
+              position: 'absolute',
+              backgroundColor: 'rgba(255, 255, 255, 0.3);',
+            }}
+          >
             <TouchableOpacity onPress={resetPhotoState}>
-              <FontAwesome name="camera" size={24} color="#BDBDBD" />
+              <FontAwesome name="camera" size={24} color="#FFFFFF" />
             </TouchableOpacity>
           </View>
         </View>
