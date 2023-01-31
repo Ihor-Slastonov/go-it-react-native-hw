@@ -60,81 +60,76 @@ export const CreatePostScreen = () => {
   };
 
   return (
-    <View style={{ flex: 1, paddingHorizontal: 16, paddingTop: 32 }}>
-      {isPhoto ? (
-        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-          <Image
-            style={{
-              width: '100%',
-              height: 240,
-              backgroundColor: '#F6F6F6',
-              borderRadius: 8,
-            }}
-            source={{ uri: photo }}
-          />
-          <View
-            style={{
-              ...styles.icnoBg,
-              position: 'absolute',
-              backgroundColor: 'rgba(255, 255, 255, 0.3);',
-            }}
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={{ flex: 1, paddingHorizontal: 16, paddingTop: 32 }}>
+        {isPhoto ? (
+          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+            <Image
+              style={{
+                width: '100%',
+                height: 240,
+                backgroundColor: '#F6F6F6',
+                borderRadius: 8,
+              }}
+              source={{ uri: photo }}
+            />
+            <View
+              style={{
+                ...styles.icnoBg,
+                position: 'absolute',
+                backgroundColor: 'rgba(255, 255, 255, 0.3);',
+              }}
+            >
+              <TouchableOpacity onPress={resetPhotoState}>
+                <FontAwesome name="camera" size={24} color="#FFFFFF" />
+              </TouchableOpacity>
+            </View>
+          </View>
+        ) : (
+          <Camera
+            style={styles.camera}
+            type={type}
+            ref={ref => setCameraRef(ref)}
           >
-            <TouchableOpacity onPress={resetPhotoState}>
-              <FontAwesome name="camera" size={24} color="#FFFFFF" />
-            </TouchableOpacity>
-          </View>
+            <View style={styles.icnoBg}>
+              <TouchableOpacity onPress={takePhoto}>
+                <FontAwesome name="camera" size={24} color="#BDBDBD" />
+              </TouchableOpacity>
+            </View>
+            <View style={{ position: 'absolute', right: 10, bottom: 10 }}>
+              <TouchableOpacity onPress={toggleCameraType}>
+                <MaterialIcons
+                  name="flip-camera-android"
+                  size={24}
+                  color="#BDBDBD"
+                />
+              </TouchableOpacity>
+            </View>
+          </Camera>
+        )}
+        <TouchableOpacity>
+          <Text style={styles.loadBtnText}>Load a photo</Text>
+        </TouchableOpacity>
+        <View style={{ ...styles.inputContainer, marginBottom: 16 }}>
+          <TextInput
+            style={styles.inputTitle}
+            placeholder="Title..."
+            placeholderTextColor="#BDBDBD"
+          />
         </View>
-      ) : (
-        <Camera
-          style={styles.camera}
-          type={type}
-          ref={ref => setCameraRef(ref)}
-        >
-          <View style={styles.icnoBg}>
-            <TouchableOpacity onPress={takePhoto}>
-              <FontAwesome name="camera" size={24} color="#BDBDBD" />
-            </TouchableOpacity>
-          </View>
-          <View style={{ position: 'absolute', right: 10, bottom: 10 }}>
-            <TouchableOpacity onPress={toggleCameraType}>
-              <MaterialIcons
-                name="flip-camera-android"
-                size={24}
-                color="#BDBDBD"
-              />
-            </TouchableOpacity>
-          </View>
-        </Camera>
-      )}
-    </View>
-    // <TouchableWithoutFeedback>
-    //   <View style={styles.container}>
-    //     <View style={styles.imageContainer}>
-    //       <View style={styles.icnoBg}>
-    //         <FontAwesome name="camera" size={24} color="#BDBDBD" />
-    //       </View>
-    //     </View>
-    //     <Text style={styles.loadBtn}>Load a photo</Text>
-    //     <View style={{ ...styles.inputContainer, marginBottom: 16 }}>
-    //       <TextInput
-    //         style={styles.inputTitle}
-    //         placeholder="Title..."
-    //         placeholderTextColor="#BDBDBD"
-    //       />
-    //     </View>
-    //     <View style={styles.inputContainer}>
-    //       <Feather name="map-pin" size={24} color="#BDBDBD" />
-    //       <TextInput
-    //         style={{ ...styles.inputTitle, marginLeft: 4 }}
-    //         placeholder="Location..."
-    //         placeholderTextColor="#BDBDBD"
-    //       />
-    //     </View>
-    //     <TouchableOpacity style={styles.submitBtn}>
-    //       <Text style={styles.submitTitle}>Post</Text>
-    //     </TouchableOpacity>
-    //   </View>
-    // </TouchableWithoutFeedback>
+        <View style={styles.inputContainer}>
+          <Feather name="map-pin" size={24} color="#BDBDBD" />
+          <TextInput
+            style={{ ...styles.inputTitle, marginLeft: 4 }}
+            placeholder="Location..."
+            placeholderTextColor="#BDBDBD"
+          />
+        </View>
+        <TouchableOpacity style={styles.submitBtn}>
+          <Text style={styles.submitTitle}>Post</Text>
+        </TouchableOpacity>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -171,7 +166,8 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     backgroundColor: '#FFFFFF',
   },
-  loadBtn: {
+  loadBtnText: {
+    marginTop: 8,
     fontFamily: 'Roboto-Regular',
     fontSize: 16,
     color: '#BDBDBD',
