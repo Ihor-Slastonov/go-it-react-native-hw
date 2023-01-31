@@ -43,7 +43,6 @@ export const CreatePostScreen = () => {
   }
 
   const toggleCameraType = () => {
-    console.log('flip');
     setType(current =>
       current === CameraType.back ? CameraType.front : CameraType.back
     );
@@ -51,22 +50,24 @@ export const CreatePostScreen = () => {
 
   const takePhoto = async () => {
     const photo = await cameraRef.takePictureAsync();
-    setPhoto(photo.uri)
-    console.log(uri);
+    setPhoto(photo.uri);
+    setIsPhoto(true)
   };
 
   return (
     <View style={{ flex: 1, paddingHorizontal: 16, paddingTop: 32 }}>
       {isPhoto ? (
-        <Image
-          style={{
-            width: '100%',
-            height: 240,
-            backgroundColor: 'tomato',
-            borderRadius: 8,
-          }}
-          source={(uri = { photo })}
-        />
+        <View>
+          <Image
+            style={{
+              width: '100%',
+              height: 240,
+              backgroundColor: 'tomato',
+              borderRadius: 8,
+            }}
+            source={{ uri: photo }}
+          />
+        </View>
       ) : (
         <Camera
           style={styles.camera}
@@ -89,15 +90,6 @@ export const CreatePostScreen = () => {
           </View>
         </Camera>
       )}
-      {/* {photo && <Image
-        style={{
-          width: '100%',
-          height: 240,
-          backgroundColor: 'tomato',
-          borderRadius: 8,
-        }}
-        source={(uri = { photo })}
-      />} */}
     </View>
     // <TouchableWithoutFeedback>
     //   <View style={styles.container}>
