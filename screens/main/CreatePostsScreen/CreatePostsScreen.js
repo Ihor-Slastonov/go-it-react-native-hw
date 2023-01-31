@@ -12,6 +12,7 @@ import {
   Button,
   Image,
 } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 
 //icons
 import { FontAwesome } from '@expo/vector-icons';
@@ -44,6 +45,21 @@ export const CreatePostScreen = () => {
     );
   }
 
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setIsPhoto(true);
+      setPhoto(result.assets[0].uri);
+    }
+  };
+
   const toggleCameraType = () => {
     setType(current =>
       current === CameraType.back ? CameraType.front : CameraType.back
@@ -58,12 +74,12 @@ export const CreatePostScreen = () => {
 
   const resetPhotoState = () => {
     setIsPhoto(false);
-    setPhoto('');
+    setPhoto(null);
   };
-  
+
   const onSubmit = () => {
-    alert('DUDEEEEE')
-  }
+    alert('DUDEEEEE');
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -113,15 +129,13 @@ export const CreatePostScreen = () => {
             </View>
           </Camera>
         )}
-        {photo ? (
-          <TouchableOpacity>
-            <Text style={styles.loadBtnText}>Edit a photo</Text>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity>
-            <Text style={styles.loadBtnText}>Load a photo</Text>
-          </TouchableOpacity>
-        )}
+
+        <TouchableOpacity onPress={pickImage}>
+          <Text style={styles.loadBtnText}>
+            {photo ? 'Edit a photo' : 'Load a photo'}
+          </Text>
+        </TouchableOpacity>
+
         <View style={{ ...styles.inputContainer, marginBottom: 16 }}>
           <TextInput
             value={title}
@@ -148,7 +162,14 @@ export const CreatePostScreen = () => {
           }}
           onPress={onSubmit}
         >
-          <Text style={{ ...styles.submitTitle, color: photo ? '#FFFFFF' : '#BDBDBD'}}>Post</Text>
+          <Text
+            style={{
+              ...styles.submitTitle,
+              color: photo ? '#FFFFFF' : '#BDBDBD',
+            }}
+          >
+            Post
+          </Text>
         </TouchableOpacity>
       </View>
     </TouchableWithoutFeedback>
