@@ -72,8 +72,7 @@ export const CreatePostScreen = ({ navigation }) => {
   }
   const getCoords = async () => {
     const location = await Location.getCurrentPositionAsync();
-    console.log(location.coords)
-    setCoords(location.coords);
+    setCoords(location);
   };
 
   const pickImage = async () => {
@@ -118,7 +117,6 @@ export const CreatePostScreen = ({ navigation }) => {
         offset: 30,
       });
     }
-
     navigation.navigate('DefaultScreen', {
       id: uuid.v4(),
       photo,

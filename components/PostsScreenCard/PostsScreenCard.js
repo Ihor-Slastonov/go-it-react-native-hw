@@ -17,7 +17,7 @@ export const PostsScreenCard = ({ photo, title, location, navigation, coords }) 
           <Text style={styles.commentsQuantity}> 0</Text>
         </View>
         <View style={styles.location}>
-          <TouchableOpacity onPress={() => navigation.navigate('Map',{coords})}>
+          <TouchableOpacity onPress={() => navigation.navigate('Map',{coords,title,location})}>
             <Feather name="map-pin" size={24} color="#BDBDBD" />
           </TouchableOpacity>
           <Text style={styles.locationTitle}>{location}</Text>

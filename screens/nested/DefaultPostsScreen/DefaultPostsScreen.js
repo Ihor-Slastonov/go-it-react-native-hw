@@ -15,7 +15,7 @@ export const DefaultPostsScreen = ({ route, navigation}) => {
 
   useEffect(() => {
     if (route.params) {
-      setPosts(prevState => [ route.params, ...prevState]);
+      setPosts(prevState => [route.params, ...prevState]);
     }
   }, [route.params]);
 
