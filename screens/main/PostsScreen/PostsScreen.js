@@ -1,82 +1,53 @@
-import { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  FlatList,
-  SafeAreaView,
-} from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { DefaultPostsScreen } from '../../nested/DefaultPostsScreen/DefaultPostsScreen';
+import { MapScreen } from '../../nested/MapScreen/MapScreen';
+import { CommentsScreen } from '../../nested/CommentsScreen/CommentsScreen';
 
-import { PostsScreenCard } from '../../../components/PostsScreenCard/PostsScreenCard';
+import { Pressable } from 'react-native';
 
-const POSTS = [
-  { id: '1', url: require('../../../assets/images/lake.png'), title: 'Lake', mapMark: "Ivano-Frankivs'k Region, Ukraine" },
-  { id: '2', url: require('../../../assets/images/forest.png'), title: 'Forest', mapMark: "Ivano-Frankivs'k Region, Ukraine" },
-  { id: '3', url: require('../../../assets/images/lake.png'), title: 'Lake', mapMark: "Ivano-Frankivs'k Region, Ukraine" },
-  { id: '4', url: require('../../../assets/images/forest.png'), title: 'Forest', mapMark: "Ivano-Frankivs'k Region, Ukraine" },
-  { id: '5', url: require('../../../assets/images/lake.png'), title: 'Lake', mapMark: "Ivano-Frankivs'k Region, Ukraine" },
-  { id: '6', url: require('../../../assets/images/forest.png'), title: 'Forest', mapMark: "Ivano-Frankivs'k Region, Ukraine" },
-  { id: '7', url: require('../../../assets/images/lake.png'), title: 'Lake', mapMark: "Ivano-Frankivs'k Region, Ukraine" },
-  { id: '8', url: require('../../../assets/images/forest.png'), title: 'Forest', mapMark: "Ivano-Frankivs'k Region, Ukraine" },
-];
+import { MaterialIcons } from '@expo/vector-icons';
 
-export const PostsScreen = () => {
-  const [posts, setPosts] = useState(POSTS);
+const NestedScreen = createStackNavigator();
 
+export const PostsScreen = ({navigation}) => {
   return (
-    <View style={styles.container}>
-      <View style={styles.avatarContainer}>
-        <View>
-          <Image
-            source={require('../../../assets/images/avatar.png')}
-            style={styles.avatar}
-          />
-        </View>
-        <View style={styles.userInfo}>
-          <Text style={styles.username}>Natali Romanova</Text>
-          <Text style={styles.userEmail}>email@example.com</Text>
-        </View>
-      </View>
-      <SafeAreaView style={{flex: 1}}>
-        <FlatList
-          data={posts}
-          renderItem={({ item }) => <PostsScreenCard url={item.url} title={item.title} mapMark={item.mapMark}/>}
-          keyExtractor={item => item.id}
-        />
-      </SafeAreaView>
-    </View>
+    <NestedScreen.Navigator initialRouteName="DefaultScreen">
+      <NestedScreen.Screen
+        name="DefaultScreen"
+        component={DefaultPostsScreen}
+        options={{
+          headerTitle: 'Posts',
+          headerTitleStyle: {
+            fontSize: 17,
+            fontFamily: 'Roboto-Medium',
+            color: '#212121',
+          },
+          headerLeft: false,
+          headerRight: () => (
+            <Pressable
+              onPress={() => navigation.navigate('Login')}
+              style={{ position: 'absolute', right: 16 }}
+            >
+              <MaterialIcons name="logout" size={24} color="#BDBDBD" />
+            </Pressable>
+          ),
+          headerStyle: {
+            borderBottomWidth: 0.3,
+            borderBottomColor: '#B3B3B3',
+          },
+          headerTitleAlign: 'center',
+        }}
+      />
+      <NestedScreen.Screen
+        name="Map"
+        component={MapScreen}
+        options={{ headerTitleAlign: 'center' }}
+      />
+      <NestedScreen.Screen
+        name="Comments"
+        component={CommentsScreen}
+        options={{ headerTitleAlign: 'center' }}
+      />
+    </NestedScreen.Navigator>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    paddingHorizontal: 16,
-  },
-  avatarContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 32,
-    marginBottom: 32,
-  },
-  avatar: {
-    width: 60,
-    height: 60,
-    borderRadius: 16,
-  },
-  userInfo: {
-    marginLeft: 8,
-  },
-  username: {
-    fontFamily: 'Roboto-Medium',
-    fontSize: 13,
-    color: '#212121',
-  },
-  userEmail: {
-    fontFamily: 'Roboto-Regular',
-    fontSize: 11,
-    color: 'rgba(33, 33, 33, 0.8)',
-  },
-});

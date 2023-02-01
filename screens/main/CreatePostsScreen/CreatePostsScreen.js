@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Camera, CameraType } from 'expo-camera';
+import * as Location from 'expo-location';
+
 import {
   View,
   Text,
@@ -14,23 +16,31 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-
+import uuid from 'react-native-uuid';
 //icons
 import { FontAwesome } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useToast } from 'react-native-toast-notifications';
 
-export const CreatePostScreen = () => {
+export const CreatePostScreen = ({ navigation }) => {
   const [type, setType] = useState(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const [cameraRef, setCameraRef] = useState(null);
   const [isPhoto, setIsPhoto] = useState(false);
-  const [photo, setPhoto] = useState('');
+  const [photo, setPhoto] = useState(null);
   const [title, setTitle] = useState('');
-  const [location, setLocation] = useState('');
-  const [isKeyboardShown, setIsKeyboardShown] = useState(false)
+  const [location, setLocation] = useState(null);
+  const [isKeyboardShown, setIsKeyboardShown] = useState(false);
+  const [coords, setCoords] = useState(null);
+
+  const toast = useToast();
 
   useEffect(() => {
+    (async () => {
+      await Location.requestForegroundPermissionsAsync();
+    })();
+
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
       setIsKeyboardShown(true);
     });
@@ -60,6 +70,11 @@ export const CreatePostScreen = () => {
       </View>
     );
   }
+  const getCoords = async () => {
+    const location = await Location.getCurrentPositionAsync();
+    console.log(location.coords)
+    setCoords(location.coords);
+  };
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -86,6 +101,7 @@ export const CreatePostScreen = () => {
     const photo = await cameraRef.takePictureAsync();
     setPhoto(photo.uri);
     setIsPhoto(true);
+    getCoords();
   };
 
   const resetPhotoState = () => {
@@ -94,59 +110,78 @@ export const CreatePostScreen = () => {
   };
 
   const onSubmit = () => {
-    alert('DUDEEEEE');
+    if (title === '' ?? photo) {
+      return toast.show('There are must be photo and title', {
+        type: 'warning',
+        placement: 'bottom',
+        duration: 2000,
+        offset: 30,
+      });
+    }
+
+    navigation.navigate('DefaultScreen', {
+      id: uuid.v4(),
+      photo,
+      title,
+      location,
+      coords,
+    });
+    resetPhotoState();
+    setTitle('');
+    setLocation('');
   };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={{ flex: 1, paddingHorizontal: 16, paddingTop: 32 }}>
-        {isPhoto ? (
-          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-            <Image
-              style={{
-                width: '100%',
-                height: 240,
-                backgroundColor: '#F6F6F6',
-                borderRadius: 8,
-              }}
-              source={{ uri: photo }}
-            />
-            <View
-              style={{
-                ...styles.icnoBg,
-                position: 'absolute',
-                backgroundColor: 'rgba(255, 255, 255, 0.3);',
-              }}
+      <View style={styles.container}>
+        <View style={{ display: isKeyboardShown ? 'none' : 'flex' }}>
+          {isPhoto ? (
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <Image
+                style={{
+                  width: '100%',
+                  height: 240,
+                  backgroundColor: '#F6F6F6',
+                  borderRadius: 8,
+                }}
+                source={{ uri: photo }}
+              />
+              <View
+                style={{
+                  ...styles.icnoBg,
+                  position: 'absolute',
+                  backgroundColor: 'rgba(255, 255, 255, 0.3);',
+                }}
+              >
+                <TouchableOpacity onPress={resetPhotoState}>
+                  <FontAwesome name="camera" size={24} color="#FFFFFF" />
+                </TouchableOpacity>
+              </View>
+            </View>
+          ) : (
+            <Camera
+              style={styles.camera}
+              type={type}
+              ref={ref => setCameraRef(ref)}
             >
-              <TouchableOpacity onPress={resetPhotoState}>
-                <FontAwesome name="camera" size={24} color="#FFFFFF" />
-              </TouchableOpacity>
-            </View>
-          </View>
-        ) : (
-          <Camera
-            style={styles.camera}
-            type={type}
-            ref={ref => setCameraRef(ref)}
-          >
-            <View style={styles.icnoBg}>
-              <TouchableOpacity onPress={takePhoto}>
-                <FontAwesome name="camera" size={24} color="#BDBDBD" />
-              </TouchableOpacity>
-            </View>
-            <View style={{ position: 'absolute', right: 10, bottom: 10 }}>
-              <TouchableOpacity onPress={toggleCameraType}>
-                <MaterialIcons
-                  name="flip-camera-android"
-                  size={24}
-                  color="#BDBDBD"
-                />
-              </TouchableOpacity>
-            </View>
-          </Camera>
-        )}
-
-        <TouchableOpacity onPress={pickImage}>
+              <View style={styles.icnoBg}>
+                <TouchableOpacity onPress={takePhoto}>
+                  <FontAwesome name="camera" size={24} color="#BDBDBD" />
+                </TouchableOpacity>
+              </View>
+              <View style={{ position: 'absolute', right: 10, bottom: 10 }}>
+                <TouchableOpacity onPress={toggleCameraType}>
+                  <MaterialIcons
+                    name="flip-camera-android"
+                    size={24}
+                    color="#BDBDBD"
+                  />
+                </TouchableOpacity>
+              </View>
+            </Camera>
+          )}
+        </View>
+        <TouchableOpacity onPress={pickImage} style={{ width: 100 }}>
           <Text style={styles.loadBtnText}>
             {photo ? 'Edit a photo' : 'Load a photo'}
           </Text>
@@ -176,6 +211,7 @@ export const CreatePostScreen = () => {
           style={{
             ...styles.submitBtn,
             backgroundColor: photo ? '#FF6C00' : '#F6F6F6',
+            display: isKeyboardShown ? 'none' : 'flex',
           }}
           onPress={onSubmit}
         >

@@ -1,22 +1,26 @@
-import { Image, Text, View, StyleSheet } from 'react-native';
+import { Image, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 //icons
 import { Feather } from '@expo/vector-icons';
 
-export const PostsScreenCard = ({ url, title, mapMark }) => {
+export const PostsScreenCard = ({ photo, title, location, navigation, coords }) => {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <Image source={url} style={styles.postImage} />
+        <Image source={{ uri: photo }} style={styles.postImage} />
       </View>
       <Text style={styles.title}>{title}</Text>
       <View style={styles.bottomContainer}>
         <View style={styles.comments}>
-          <Feather name="message-circle" size={24} color="#BDBDBD"/>
+          <TouchableOpacity onPress={() => navigation.navigate('Comments')}>
+            <Feather name="message-circle" size={24} color="#BDBDBD" />
+          </TouchableOpacity>
           <Text style={styles.commentsQuantity}> 0</Text>
         </View>
         <View style={styles.location}>
-          <Feather name="map-pin" size={24} color="#BDBDBD" />
-          <Text style={styles.locationTitle}>{mapMark}</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Map',{coords})}>
+            <Feather name="map-pin" size={24} color="#BDBDBD" />
+          </TouchableOpacity>
+          <Text style={styles.locationTitle}>{location}</Text>
         </View>
       </View>
     </View>
@@ -24,9 +28,9 @@ export const PostsScreenCard = ({ url, title, mapMark }) => {
 };
 
 const styles = StyleSheet.create({
-    container:{
-        paddingBottom: 32
-    },
+  container: {
+    paddingBottom: 32,
+  },
   imageContainer: {
     width: '100%',
     height: 240,
@@ -48,7 +52,7 @@ const styles = StyleSheet.create({
   bottomContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: "space-between"
+    justifyContent: 'space-between',
   },
   comments: {
     flexDirection: 'row',
@@ -63,11 +67,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  locationTitle:{
+  locationTitle: {
     marginLeft: 4,
     fontFamily: 'Roboto-Regular',
     fontSize: 16,
     color: '#212121',
-    textDecorationLine: 'underline'
-  }
+    textDecorationLine: 'underline',
+  },
 });

@@ -1,5 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { ToastProvider } from 'react-native-toast-notifications';
 
 import * as Font from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
@@ -39,7 +40,7 @@ export default function App() {
   }
 
   return (
-    <>
+    <ToastProvider>
       <NavigationContainer>
         <AuthStack.Navigator initialRouteName="Login">
           <AuthStack.Screen
@@ -60,8 +61,6 @@ export default function App() {
         </AuthStack.Navigator>
       </NavigationContainer>
       <StatusBar style="auto" />
-    </>
+    </ToastProvider>
   );
 }
-
-// auth
