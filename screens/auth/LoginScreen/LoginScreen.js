@@ -23,10 +23,10 @@ export const LoginScreen = ({ navigation }) => {
   const [isKeyboardShown, setIsKeyboardShown] = useState(false);
 
   useEffect(() => {
-    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+    const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
       setIsKeyboardShown(true);
     });
-    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+    const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
       setIsKeyboardShown(false);
     });
 
@@ -47,63 +47,73 @@ export const LoginScreen = ({ navigation }) => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-    <View style={styles.container}>
-      <ImageBackground source={imageBg} style={styles.imageBg}>
-          <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : ''}>
-            
-          <View style={{ ...styles.form, paddingBottom:isKeyboardShown? 32 : 144 }}>
-            <Text style={styles.title}>Login</Text>
+      <View style={styles.container}>
+        <ImageBackground source={imageBg} style={styles.imageBg}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : ''}
+          >
+            <View
+              style={{
+                ...styles.form,
+                paddingBottom: isKeyboardShown ? 32 : 144,
+              }}
+            >
+              <Text style={styles.title}>Login</Text>
 
-            <View width="100%">
-              <TextInput
-                value={email}
-                onChangeText={handleSetEmail}
-                placeholder="E-mail address"
-                placeholderTextColor="#BDBDBD"
-                style={{
-                  ...styles.input,
-                  marginBottom: 16,
-                  borderColor: email ? '#FF6C00' : '#E8E8E8',
-                  backgroundColor: email ? '#FFFFFF' : '#F6F6F6',
-                }}
-              />
-
-              <View style={styles.passwordContainer}>
+              <View width="100%">
                 <TextInput
-                  value={password}
-                  onChangeText={handleSetPassword}
+                  value={email}
+                  onChangeText={handleSetEmail}
+                  placeholder="E-mail address"
+                  placeholderTextColor="#BDBDBD"
                   style={{
                     ...styles.input,
-                    borderColor: password ? '#FF6C00' : '#E8E8E8',
-                    backgroundColor: password ? '#FFFFFF' : '#F6F6F6',
+                    marginBottom: 16,
+                    borderColor: email ? '#FF6C00' : '#E8E8E8',
+                    backgroundColor: email ? '#FFFFFF' : '#F6F6F6',
                   }}
-                  placeholder="Password"
-                  placeholderTextColor="#BDBDBD"
-                  secureTextEntry={isSecureText}
                 />
-                <Pressable
-                  onPress={() => setIsSecureText(prevState => !prevState)}
-                >
-                  <Text style={styles.showText}>
-                    {isSecureText ? 'Show' : 'Hide'}
-                  </Text>
-                </Pressable>
-              </View>
+
+                <View style={styles.passwordContainer}>
+                  <TextInput
+                    value={password}
+                    onChangeText={handleSetPassword}
+                    style={{
+                      ...styles.input,
+                      borderColor: password ? '#FF6C00' : '#E8E8E8',
+                      backgroundColor: password ? '#FFFFFF' : '#F6F6F6',
+                    }}
+                    placeholder="Password"
+                    placeholderTextColor="#BDBDBD"
+                    secureTextEntry={isSecureText}
+                  />
+                  <Pressable
+                    onPress={() => setIsSecureText(prevState => !prevState)}
+                  >
+                    <Text style={styles.showText}>
+                      {isSecureText ? 'Show' : 'Hide'}
+                    </Text>
+                  </Pressable>
+                </View>
 
                 <View style={{ display: isKeyboardShown ? 'none' : 'flex' }}>
-                <TouchableOpacity style={styles.submitBtn} activeOpacity={0.9} onPress={()=>navigation.navigate('Home')}>
-                  <Text style={styles.submitBtnText}>Log in</Text>
-                </TouchableOpacity>
-                <Pressable onPress={()=>navigation.navigate('Register')}>
-                  <Text style={styles.afterSubmitText}>
-                    You don't have an account? Sign up
-                  </Text>
-                </Pressable>
+                  <TouchableOpacity
+                    style={styles.submitBtn}
+                    activeOpacity={0.9}
+                    onPress={() => {}}
+                  >
+                    <Text style={styles.submitBtnText}>Log in</Text>
+                  </TouchableOpacity>
+                  <Pressable onPress={() => navigation.navigate('Register')}>
+                    <Text style={styles.afterSubmitText}>
+                      You don't have an account? Sign up
+                    </Text>
+                  </Pressable>
+                </View>
               </View>
             </View>
-          </View>
-        </KeyboardAvoidingView>
-      </ImageBackground>
+          </KeyboardAvoidingView>
+        </ImageBackground>
       </View>
     </TouchableWithoutFeedback>
   );

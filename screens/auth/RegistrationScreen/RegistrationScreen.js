@@ -15,6 +15,8 @@ import {
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { authSignUpUser } from '../../../redux/auth/operations';
 
 const imageBg = require('../../../assets/images/auth-bg.png');
 
@@ -25,6 +27,8 @@ export const RegistrationScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isKeyboardShown, setIsKeyboardShown] = useState(false);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
@@ -44,18 +48,15 @@ export const RegistrationScreen = ({ navigation }) => {
   const handleSetEmail = text => setEmail(text);
   const handleSetPassword = text => setPassword(text);
 
-  const handleSubmit = () => {
-    console.log(
-      `Avatar: ${avatar}`,
-      `Login: ${login}`,
-      `Email: ${email}`,
-      `Password: ${password}`
-    );
-    setAvatar(null);
+  const formReset = () => {
     setLogin('');
+    setAvatar('');
     setEmail('');
     setPassword('');
-    navigation.navigate('Home');
+  };
+  const handleSubmit = () => {
+    dispatch(authSignUpUser({ email, password, login }));
+    formReset();
   };
 
   const pickImage = async () => {
