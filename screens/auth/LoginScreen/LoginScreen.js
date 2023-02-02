@@ -13,6 +13,8 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { authSignInUser } from '../../../redux/auth/operations';
 
 const imageBg = require('../../../assets/images/auth-bg.png');
 
@@ -21,6 +23,8 @@ export const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [isSecureText, setIsSecureText] = useState(true);
   const [isKeyboardShown, setIsKeyboardShown] = useState(false);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
@@ -41,6 +45,7 @@ export const LoginScreen = ({ navigation }) => {
 
   const handleSubmit = () => {
     console.log(`Email: ${email}`, `Password: ${password}`);
+    dispatch(authSignInUser({ email, password }));
     setEmail('');
     setPassword('');
   };
@@ -100,7 +105,7 @@ export const LoginScreen = ({ navigation }) => {
                   <TouchableOpacity
                     style={styles.submitBtn}
                     activeOpacity={0.9}
-                    onPress={() => {}}
+                    onPress={handleSubmit}
                   >
                     <Text style={styles.submitBtnText}>Log in</Text>
                   </TouchableOpacity>

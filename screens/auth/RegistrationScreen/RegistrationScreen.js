@@ -54,6 +54,7 @@ export const RegistrationScreen = ({ navigation }) => {
     setEmail('');
     setPassword('');
   };
+  
   const handleSubmit = () => {
     dispatch(authSignUpUser({ email, password, login }));
     formReset();
