@@ -24,7 +24,7 @@ export const RegistrationScreen = ({ navigation }) => {
   const [avatar, setAvatar] = useState(null);
   const [isSecureText, setIsSecureText] = useState(true);
   const [login, setLogin] = useState('');
-  const [email, setEmail] = useState('');
+  const [mail, setMail] = useState('');
   const [password, setPassword] = useState('');
   const [isKeyboardShown, setIsKeyboardShown] = useState(false);
 
@@ -45,18 +45,18 @@ export const RegistrationScreen = ({ navigation }) => {
   }, []);
 
   const handleSetLogin = text => setLogin(text);
-  const handleSetEmail = text => setEmail(text);
+  const handleSetEmail = text => setMail(text);
   const handleSetPassword = text => setPassword(text);
 
   const formReset = () => {
     setLogin('');
     setAvatar(null);
-    setEmail('');
+    setMail('');
     setPassword('');
   };
 
   const handleSubmit = () => {
-    dispatch(authSignUpUser({ email, password, login }));
+    dispatch(authSignUpUser({ mail, password, login }));
     formReset();
   };
 
@@ -132,13 +132,13 @@ export const RegistrationScreen = ({ navigation }) => {
                   placeholderTextColor="#BDBDBD"
                 />
                 <TextInput
-                  value={email}
+                  value={mail}
                   onChangeText={handleSetEmail}
                   style={{
                     ...styles.input,
                     marginBottom: 16,
-                    borderColor: email ? '#FF6C00' : '#E8E8E8',
-                    backgroundColor: email ? '#FFFFFF' : '#F6F6F6',
+                    borderColor: mail ? '#FF6C00' : '#E8E8E8',
+                    backgroundColor: mail ? '#FFFFFF' : '#F6F6F6',
                   }}
                   placeholder="E-mail address"
                   placeholderTextColor="#BDBDBD"

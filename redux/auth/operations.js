@@ -44,12 +44,12 @@ import {
 
 export const authSignUpUser = createAsyncThunk(
   'auth/signUpUser',
-  async ({ email, password, login }, thunkApi) => {
+  async ({ mail, password, login }, thunkApi) => {
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      await createUserWithEmailAndPassword(auth, mail, password);
       await updateProfile(auth.currentUser, { displayName: login });
-      const { uid, displayName } = auth.currentUser;
-      return { uid, displayName };
+      const { uid, displayName, email } = auth.currentUser;
+      return { uid, displayName, email };
     } catch (error) {
       return thunkApi.rejectWithValue(error.message);
     }
@@ -58,11 +58,11 @@ export const authSignUpUser = createAsyncThunk(
 
 export const authSignInUser = createAsyncThunk(
   'auth/signInUser',
-  async ({ email, password }, thunkApi) => {
+  async ({ mail, password }, thunkApi) => {
     try {
       const { user } = await createUserWithEmailAndPassword(
         auth,
-        email,
+        mail,
         password
       );
       console.log('user login operations', user);
