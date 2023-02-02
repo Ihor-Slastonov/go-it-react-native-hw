@@ -1,34 +1,76 @@
-import { app } from '../../firebase/config';
+// import { auth }from '../../firebase/config'
+// import {
+//   getAuth,
+//   createUserWithEmailAndPassword,
+//   signInWithEmailAndPassword,
+// } from 'firebase/auth';
+// import { authSlice } from './authSlice'
+
+// export const authSignUpUser =
+//   ({ email, password, login }) =>
+//   async (dispatch, getState) => {
+//     try {
+//       const {user} = await createUserWithEmailAndPassword(auth, email, password);
+//       console.log('user', user);
+//       dispatch(authSlice.actions.updateUserProfile({userId: user.uid}))
+//     } catch (error) {
+//       console.log(error);
+//       console.log(error.message);
+//     }
+//   };
+
+// export const authSignInUser =
+//   ({ email, password }) =>
+//   async (dispatch, getState) => {
+//     try {
+//         const user = await signInWithEmailAndPassword(auth, email, password);
+//       console.log('user', user);
+//     } catch (error) {
+//       console.log(error);
+//       console.log(error.message);
+//     }
+//   };
+
+// export const authSignOutUser = () => async (dispatch, getState) => {};
+
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { auth } from '../../firebase/config';
 import {
-  getAuth,
   createUserWithEmailAndPassword,
+  onAuthStateChanged,
   signInWithEmailAndPassword,
+  updateProfile,
 } from 'firebase/auth';
 
-const auth = getAuth(app);
-export const authSignUpUser =
-  ({ email, password, login }) =>
-  async (dispatch, getState) => {
-    console.log(email);
+export const authSignUpUser = createAsyncThunk(
+  'auth/signUpUser',
+  async ({ email, password, login }, thunkApi) => {
     try {
-      const user = await createUserWithEmailAndPassword(auth, email, password);
-      console.log(user);
+      await createUserWithEmailAndPassword(auth, email, password);
+      await updateProfile(auth.currentUser, { displayName: login });
+      const { uid, displayName } = auth.currentUser;
+      return { uid, displayName };
     } catch (error) {
-      console.log(error);
-      console.log(error.message);
+      return thunkApi.rejectWithValue(error.message);
     }
-  };
+  }
+);
 
-export const authSignInUser =
-  ({ email, password }) =>
-  async (dispatch, getState) => {
+export const authSignInUser = createAsyncThunk(
+  'auth/signInUser',
+  async ({ email, password }, thunkApi) => {
     try {
-        const user = await signInWithEmailAndPassword(auth, email, password);
-        console.log(user);
+      const { user } = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      console.log('user login operations', user);
+      return user.uid;
     } catch (error) {
-      console.log(error);
-      console.log(error.message);
+      return thunkApi.rejectWithValue(error.message);
     }
-  };
+  }
+);
 
-export const authSignOutUser = () => async (dispatch, getState) => {};
+// export const onAuthStateChanged = createAsyncThunk('auth/stateChange');

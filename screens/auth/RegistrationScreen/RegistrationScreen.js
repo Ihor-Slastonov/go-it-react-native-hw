@@ -50,11 +50,11 @@ export const RegistrationScreen = ({ navigation }) => {
 
   const formReset = () => {
     setLogin('');
-    setAvatar('');
+    setAvatar(null);
     setEmail('');
     setPassword('');
   };
-  
+
   const handleSubmit = () => {
     dispatch(authSignUpUser({ email, password, login }));
     formReset();
