@@ -9,7 +9,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 const NestedScreen = createStackNavigator();
 
-export const PostsScreen = ({navigation}) => {
+export const PostsScreen = ({ navigation }) => {
   return (
     <NestedScreen.Navigator initialRouteName="DefaultScreen">
       <NestedScreen.Screen

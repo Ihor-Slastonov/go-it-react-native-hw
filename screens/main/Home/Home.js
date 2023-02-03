@@ -1,3 +1,5 @@
+import { NavigationContainer } from '@react-navigation/native';
+
 import { useState } from 'react';
 import { useRoute } from '../../../router';
 import { auth } from '../../../firebase/config';
@@ -8,7 +10,7 @@ export const Home = () => {
 
   onAuthStateChanged(auth, user => setUser(user));
 
-  const routing = useRoute(null);
+  const routing = useRoute(user);
 
-  return <>{routing}</>;
+  return <NavigationContainer>{routing}</NavigationContainer>;
 };

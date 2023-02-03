@@ -1,5 +1,4 @@
 import { store } from './redux/store';
-import { NavigationContainer } from '@react-navigation/native';
 import { ToastProvider } from 'react-native-toast-notifications';
 import * as Font from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
@@ -7,7 +6,6 @@ import { useEffect, useState } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import { Provider } from 'react-redux';
 import { Home } from './screens/main/Home/Home';
-
 
 SplashScreen.preventAutoHideAsync();
 
@@ -39,10 +37,8 @@ export default function App() {
   return (
     <Provider store={store}>
       <ToastProvider>
-        <NavigationContainer>
-          <Home />
-        </NavigationContainer>
-        <StatusBar style="auto" />
+        <Home />
+        {/* <StatusBar style="auto" /> */}
       </ToastProvider>
     </Provider>
   );
