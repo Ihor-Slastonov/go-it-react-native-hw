@@ -38,7 +38,7 @@ export default function App() {
     <Provider store={store}>
       <ToastProvider>
         <Home />
-        {/* <StatusBar style="auto" /> */}
+        <StatusBar style="auto" />
       </ToastProvider>
     </Provider>
   );

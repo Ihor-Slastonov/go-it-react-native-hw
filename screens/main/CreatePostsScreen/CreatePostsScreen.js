@@ -47,6 +47,10 @@ export const CreatePostScreen = ({ navigation }) => {
     const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
       setIsKeyboardShown(false);
     });
+    (async () => {
+      const location = await Location.getCurrentPositionAsync();
+      setCoords(location);
+    })();
 
     return () => {
       showSubscription.remove();
@@ -70,9 +74,12 @@ export const CreatePostScreen = ({ navigation }) => {
       </View>
     );
   }
-  const getCoords = async () => {
-    const location = await Location.getCurrentPositionAsync();
-    setCoords(location);
+  const getAddress = async () => {
+    const address = await Location.reverseGeocodeAsync({
+      latitude: coords.coords.latitude,
+      longitude: coords.coords.longitude,
+    });
+    setLocation(`${address[0].city}, ${address[0].country}`);
   };
 
   const pickImage = async () => {
@@ -100,12 +107,13 @@ export const CreatePostScreen = ({ navigation }) => {
     const photo = await cameraRef.takePictureAsync();
     setPhoto(photo.uri);
     setIsPhoto(true);
-    getCoords();
+    getAddress();
   };
 
   const resetPhotoState = () => {
     setIsPhoto(false);
     setPhoto(null);
+    setLocation('');
   };
 
   const onSubmit = () => {
