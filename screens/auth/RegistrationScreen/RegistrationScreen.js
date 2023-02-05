@@ -1,4 +1,5 @@
 import { AntDesign } from '@expo/vector-icons';
+import Toast from 'react-native-toast-message';
 import {
   View,
   ImageBackground,
@@ -56,6 +57,9 @@ export const RegistrationScreen = ({ navigation }) => {
   };
 
   const handleSubmit = () => {
+    if (mail === '' && password === '' && login === '') {
+      return Toast.show({ type: 'error', text1: 'Fill in all fields' });
+    }
     dispatch(authSignUpUser({ mail, password, login }));
     formReset();
   };

@@ -27,7 +27,6 @@ export const CreatePostScreen = ({ navigation }) => {
   const [type, setType] = useState(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const [cameraRef, setCameraRef] = useState(null);
-  const [isPhoto, setIsPhoto] = useState(false);
   const [photo, setPhoto] = useState(null);
   const [title, setTitle] = useState('');
   const [location, setLocation] = useState(null);
@@ -92,7 +91,6 @@ export const CreatePostScreen = ({ navigation }) => {
     });
 
     if (!result.canceled) {
-      setIsPhoto(true);
       setPhoto(result.assets[0].uri);
     }
   };
@@ -106,12 +104,10 @@ export const CreatePostScreen = ({ navigation }) => {
   const takePhoto = async () => {
     const photo = await cameraRef.takePictureAsync();
     setPhoto(photo.uri);
-    setIsPhoto(true);
     getAddress();
   };
 
   const resetPhotoState = () => {
-    setIsPhoto(false);
     setPhoto(null);
     setLocation('');
   };
@@ -136,7 +132,7 @@ export const CreatePostScreen = ({ navigation }) => {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <View style={{ display: isKeyboardShown ? 'none' : 'flex' }}>
-          {isPhoto ? (
+          {photo ? (
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
               <Image
                 style={{
