@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Camera, CameraType } from 'expo-camera';
 import * as Location from 'expo-location';
-import { uploadBytes, ref } from 'firebase/storage';
+import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
 import { storage } from '../../../firebase/config';
 
 import {
@@ -121,7 +121,10 @@ export const CreatePostScreen = ({ navigation }) => {
     const file = await response.blob();
     await uploadBytes(ref(storage, `photos/${file._data.blobId}`), file);
     // get photo url
-    
+    const photoUrl = await getDownloadURL(
+      ref(storage, `photos/${file._data.blobId}`)
+    );
+    console.log(photoUrl)
   };
 
   const onSubmit = () => {
