@@ -19,6 +19,5 @@ export const auth = getAuth(app);
 
 //Init storage fot post's images
 
-const storage = getStorage(app);
+export const storage = getStorage(app);
 
-export const storagePostImage = ref(storage,'photos')
