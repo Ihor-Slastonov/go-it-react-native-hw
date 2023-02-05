@@ -75,13 +75,6 @@ export const CreatePostScreen = ({ navigation }) => {
       </View>
     );
   }
-  const uploadPhoto = async () => {
-    const response = await fetch(photo);
-    console.log(response);
-    const file = await response.blob();
-    console.log(file._data.blobId);
-    await uploadBytes(ref(storage, `photos/${file._data.blobId}`), file);
-  };
 
   const getAddress = async () => {
     const address = await Location.reverseGeocodeAsync({
@@ -120,6 +113,15 @@ export const CreatePostScreen = ({ navigation }) => {
   const resetPhotoState = () => {
     setPhoto(null);
     setLocation('');
+  };
+
+  const uploadPhoto = async () => {
+    // Uploading photo
+    const response = await fetch(photo);
+    const file = await response.blob();
+    await uploadBytes(ref(storage, `photos/${file._data.blobId}`), file);
+    // get photo url
+    
   };
 
   const onSubmit = () => {
