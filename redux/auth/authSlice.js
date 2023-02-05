@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import Toast from 'react-native-toast-message'
 import { authSignUpUser, authSignInUser, authSingOutUser } from './operations';
 
 const initialState = {
@@ -27,13 +28,14 @@ const authSlice = createSlice({
       state.email = action.payload.email;
     },
     [authSignUpUser.rejected]() {
-      alert('try again');
+      Toast.show({type: "error", text1: 'Wrong email or password'});
     },
     [authSignInUser.fulfilled]() {
-      alert('Welcome');
+      Toast.show({ type: "success", text1: `Welcome` });
+
     },
-    [authSignInUser.rejected]({ payload }) {
-      alert(payload);
+    [authSignInUser.rejected]() {
+      Toast.show({type: "error", text1: 'Wrong email or password'});
     },
     [authSingOutUser.fulfilled](state) {
       state.userId = null;

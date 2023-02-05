@@ -1,4 +1,5 @@
 import { store } from './redux/store';
+import Toast from 'react-native-toast-message';
 import * as Font from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
@@ -35,8 +36,9 @@ export default function App() {
 
   return (
     <Provider store={store}>
-        <Home />
-        <StatusBar style="auto" />
+      <Home />
+      <StatusBar style="auto" />
+      <Toast />
     </Provider>
   );
 }

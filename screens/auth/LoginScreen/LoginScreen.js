@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Toast from 'react-native-toast-message';
 import {
   View,
   ImageBackground,
@@ -13,7 +14,6 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from 'react-native';
-import { useToast } from 'react-native-toast-notifications';
 import { useDispatch } from 'react-redux';
 import { authSignInUser } from '../../../redux/auth/operations';
 const imageBg = require('../../../assets/images/auth-bg.png');
@@ -24,7 +24,6 @@ export const LoginScreen = ({ navigation }) => {
   const [isSecureText, setIsSecureText] = useState(true);
   const [isKeyboardShown, setIsKeyboardShown] = useState(false);
 
-  const toast = useToast();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -46,8 +45,7 @@ export const LoginScreen = ({ navigation }) => {
 
   const handleSubmit = () => {
     if (mail === '' && password === '') {
-      
-      return toast.show('Email and password cannot be empty string',{type: 'warning'});
+      return Toast.show({ type: 'error', text1: 'Fill in all fields' });
     }
     dispatch(authSignInUser({ mail, password }));
     setMail('');
