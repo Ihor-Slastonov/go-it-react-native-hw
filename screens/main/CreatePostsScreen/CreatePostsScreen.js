@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Camera, CameraType } from 'expo-camera';
 import * as Location from 'expo-location';
+import { storagePostImage } from '../../../firebase/config';
+import { uploadBytes } from 'firebase/storage';
 
 import {
   View,
@@ -73,6 +75,14 @@ export const CreatePostScreen = ({ navigation }) => {
       </View>
     );
   }
+  const uploadPhoto = async() => {
+    const response = await fetch(photo);
+    console.log(response)
+    const file = await response.blob()
+    console.log(file._data.blobId)
+    await uploadBytes(storagePostImage, file)
+}
+
   const getAddress = async () => {
     const address = await Location.reverseGeocodeAsync({
       latitude: coords.coords.latitude,
@@ -116,16 +126,17 @@ export const CreatePostScreen = ({ navigation }) => {
     if (title === '' ?? photo) {
       return toast.show('There are must be photo and title');
     }
-    navigation.navigate('DefaultScreen', {
-      id: uuid.v4(),
-      photo,
-      title,
-      location,
-      coords,
-    });
-    resetPhotoState();
-    setTitle('');
-    setLocation('');
+    uploadPhoto()
+    // navigation.navigate('DefaultScreen', {
+    //   id: uuid.v4(),
+    //   photo,
+    //   title,
+    //   location,
+    //   coords,
+    // });
+    // resetPhotoState();
+    // setTitle('');
+    // setLocation('');
   };
 
   return (
