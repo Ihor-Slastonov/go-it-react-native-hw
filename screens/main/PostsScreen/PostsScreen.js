@@ -1,3 +1,5 @@
+import { authSingOutUser } from '../../../redux/auth/operations';
+import { useDispatch } from 'react-redux';
 import { createStackNavigator } from '@react-navigation/stack';
 import { DefaultPostsScreen } from '../../nested/DefaultPostsScreen/DefaultPostsScreen';
 import { MapScreen } from '../../nested/MapScreen/MapScreen';
@@ -10,6 +12,8 @@ import { MaterialIcons } from '@expo/vector-icons';
 const NestedScreen = createStackNavigator();
 
 export const PostsScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
+
   return (
     <NestedScreen.Navigator initialRouteName="DefaultScreen">
       <NestedScreen.Screen
@@ -25,7 +29,7 @@ export const PostsScreen = ({ navigation }) => {
           headerLeft: false,
           headerRight: () => (
             <Pressable
-              onPress={() => navigation.navigate('Login')}
+              onPress={() => dispatch(authSingOutUser())}
               style={{ position: 'absolute', right: 16 }}
             >
               <MaterialIcons name="logout" size={24} color="#BDBDBD" />

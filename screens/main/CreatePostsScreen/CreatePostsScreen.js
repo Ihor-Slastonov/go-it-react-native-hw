@@ -118,12 +118,7 @@ export const CreatePostScreen = ({ navigation }) => {
 
   const onSubmit = () => {
     if (title === '' ?? photo) {
-      return toast.show('There are must be photo and title', {
-        type: 'warning',
-        placement: 'bottom',
-        duration: 2000,
-        offset: 30,
-      });
+      return toast.show('There are must be photo and title');
     }
     navigation.navigate('DefaultScreen', {
       id: uuid.v4(),

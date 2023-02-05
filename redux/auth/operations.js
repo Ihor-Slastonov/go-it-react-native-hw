@@ -5,6 +5,7 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   updateProfile,
+  signOut,
 } from 'firebase/auth';
 import { stateChange } from './authSlice';
 
@@ -26,12 +27,18 @@ export const authSignInUser = createAsyncThunk(
   'auth/signInUser',
   async ({ mail, password }, thunkApi) => {
     try {
-      const { uid, displayName, email } = await signInWithEmailAndPassword(
-        auth,
-        mail,
-        password
-      );
-      return { uid, displayName, email };
+      await signInWithEmailAndPassword(auth, mail, password);
+    } catch (error) {
+      return thunkApi.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const authSingOutUser = createAsyncThunk(
+  'auth/singOutUser',
+  async (_, thunkApi) => {
+    try {
+      await signOut(auth);
     } catch (error) {
       return thunkApi.rejectWithValue(error.message);
     }

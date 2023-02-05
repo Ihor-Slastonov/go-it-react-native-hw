@@ -13,17 +13,18 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from 'react-native';
+import { useToast } from 'react-native-toast-notifications';
 import { useDispatch } from 'react-redux';
 import { authSignInUser } from '../../../redux/auth/operations';
-
 const imageBg = require('../../../assets/images/auth-bg.png');
 
 export const LoginScreen = ({ navigation }) => {
-  const [email, setEmail] = useState('');
+  const [mail, setMail] = useState('');
   const [password, setPassword] = useState('');
   const [isSecureText, setIsSecureText] = useState(true);
   const [isKeyboardShown, setIsKeyboardShown] = useState(false);
 
+  const toast = useToast();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -40,13 +41,16 @@ export const LoginScreen = ({ navigation }) => {
     };
   }, []);
 
-  const handleSetEmail = text => setEmail(text);
+  const handleSetEmail = text => setMail(text);
   const handleSetPassword = text => setPassword(text);
 
   const handleSubmit = () => {
-    console.log(`Email: ${email}`, `Password: ${password}`);
-    dispatch(authSignInUser({ email, password }));
-    setEmail('');
+    if (mail === '' && password === '') {
+      
+      return toast.show('Email and password cannot be empty string',{type: 'warning'});
+    }
+    dispatch(authSignInUser({ mail, password }));
+    setMail('');
     setPassword('');
   };
 
@@ -67,15 +71,15 @@ export const LoginScreen = ({ navigation }) => {
 
               <View width="100%">
                 <TextInput
-                  value={email}
+                  value={mail}
                   onChangeText={handleSetEmail}
                   placeholder="E-mail address"
                   placeholderTextColor="#BDBDBD"
                   style={{
                     ...styles.input,
                     marginBottom: 16,
-                    borderColor: email ? '#FF6C00' : '#E8E8E8',
-                    backgroundColor: email ? '#FFFFFF' : '#F6F6F6',
+                    borderColor: mail ? '#FF6C00' : '#E8E8E8',
+                    backgroundColor: mail ? '#FFFFFF' : '#F6F6F6',
                   }}
                 />
 

@@ -1,23 +1,5 @@
-// import { createSlice } from '@reduxjs/toolkit';
-// const initialState = {
-//     userId: null,
-//     nickname: null,
-// };
-
-// export const authSlice = createSlice({
-//     name: 'auth',
-//     initialState: initialState,
-//     reducers: {
-//         updateUserProfile: (state, { payload }) => ({
-//             ...state,
-//             userId: payload.userId,
-//         }),
-//     },
-// });
-// console.log(authSlice);
-
 import { createSlice } from '@reduxjs/toolkit';
-import { authSignUpUser, authSignInUser, authStateChanged } from './operations';
+import { authSignUpUser, authSignInUser, authSingOutUser } from './operations';
 
 const initialState = {
   userId: null,
@@ -47,10 +29,17 @@ const authSlice = createSlice({
     [authSignUpUser.rejected]() {
       alert('try again');
     },
-    [authSignInUser.fulfilled](state, action) {
-      state.userId = action.payload.uid;
-      state.nickname = action.payload.displayName;
-      state.email = action.payload.email;
+    [authSignInUser.fulfilled]() {
+      alert('Welcome');
+    },
+    [authSignInUser.rejected]({ payload }) {
+      alert(payload);
+    },
+    [authSingOutUser.fulfilled](state) {
+      state.userId = null;
+      state.nickname = null;
+      state.stateChange = false;
+      state.email = null;
     },
   },
 });
