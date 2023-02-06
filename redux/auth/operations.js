@@ -15,8 +15,8 @@ export const authSignUpUser = createAsyncThunk(
     try {
       await createUserWithEmailAndPassword(auth, mail, password);
       await updateProfile(auth.currentUser, { displayName: login, photoURL: avatar });
-      const { uid, displayName, email } = auth.currentUser;
-      return { uid, displayName, email };
+      const { uid, displayName, email, photoURL } = auth.currentUser;
+      return { uid, displayName, email, photoURL };
     } catch (error) {
       return thunkApi.rejectWithValue(error.message);
     }

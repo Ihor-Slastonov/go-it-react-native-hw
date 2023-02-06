@@ -20,6 +20,7 @@ const authSlice = createSlice({
       nickname: payload.nickname,
       email: payload.email,
       stateChange: true,
+      avatar: payload.avatar
     }),
   },
   extraReducers: {
@@ -27,6 +28,7 @@ const authSlice = createSlice({
       state.userId = action.payload.uid;
       state.nickname = action.payload.displayName;
       state.email = action.payload.email;
+      state.avatar = action.payload.photoURL
     },
     [authSignUpUser.rejected]() {
       Toast.show({type: "error", text1: 'Wrong email or password'});
