@@ -7,11 +7,14 @@ import {
   FlatList,
   SafeAreaView,
 } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import { PostsScreenCard } from '../../../components/PostsScreenCard/PostsScreenCard';
 
-export const DefaultPostsScreen = ({ route, navigation}) => {
+export const DefaultPostsScreen = ({ route, navigation }) => {
   const [posts, setPosts] = useState([]);
+
+  const {nickname,email, avatar} = useSelector(state => state.auth);
 
   useEffect(() => {
     if (route.params) {
@@ -24,13 +27,13 @@ export const DefaultPostsScreen = ({ route, navigation}) => {
       <View style={styles.avatarContainer}>
         <View>
           <Image
-            source={require('../../../assets/images/avatar.png')}
+            source={{uri: avatar}}
             style={styles.avatar}
           />
         </View>
         <View style={styles.userInfo}>
-          <Text style={styles.username}>Natali Romanova</Text>
-          <Text style={styles.userEmail}>email@example.com</Text>
+          <Text style={styles.username}>{nickname}</Text>
+          <Text style={styles.userEmail}>{email}</Text>
         </View>
       </View>
       <SafeAreaView style={{ flex: 1 }}>
