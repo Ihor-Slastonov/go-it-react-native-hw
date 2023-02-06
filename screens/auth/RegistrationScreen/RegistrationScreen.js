@@ -1,3 +1,10 @@
+import * as ImagePicker from 'expo-image-picker';
+import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { authSignUpUser } from '../../../redux/auth/operations';
+import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
+import { storage, db } from '../../../firebase/config';
+
 import { AntDesign } from '@expo/vector-icons';
 import Toast from 'react-native-toast-message';
 import {
@@ -14,10 +21,6 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { authSignUpUser } from '../../../redux/auth/operations';
 
 const imageBg = require('../../../assets/images/auth-bg.png');
 
@@ -28,6 +31,7 @@ export const RegistrationScreen = ({ navigation }) => {
   const [mail, setMail] = useState('');
   const [password, setPassword] = useState('');
   const [isKeyboardShown, setIsKeyboardShown] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState('')
 
   const dispatch = useDispatch();
 
@@ -54,13 +58,30 @@ export const RegistrationScreen = ({ navigation }) => {
     setAvatar(null);
     setMail('');
     setPassword('');
+    setAvatarUrl('')
+  };
+
+  const uploadPhoto = async () => {
+    try {
+      // Uploading photo
+      const response = await fetch(avatar);
+      const file = await response.blob();
+      await uploadBytes(ref(storage, `avatars/${file._data.blobId}`), file);
+      // get photo url
+      const photoUrl = await getDownloadURL(
+        ref(storage, `photos/${file._data.blobId}`)
+      );
+      setAvatarUrl(photoUrl)
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleSubmit = () => {
     if (mail === '' && password === '' && login === '') {
       return Toast.show({ type: 'error', text1: 'Fill in all fields' });
     }
-    dispatch(authSignUpUser({ mail, password, login }));
+    dispatch(authSignUpUser({ mail, password, login, photoUrl }));
     formReset();
   };
 
