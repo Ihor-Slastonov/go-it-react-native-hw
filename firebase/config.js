@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-import { getStorage, ref } from "firebase/storage";
+import { getStorage } from 'firebase/storage';
+import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDat8MGhliQVTzChPRobyJ_hnjwaLBbgN0',
@@ -12,12 +13,14 @@ const firebaseConfig = {
   measurementId: 'G-KNCJ1X461F',
 };
 
-// Initialize Firebase
+// Init Firebase
 export const app = initializeApp(firebaseConfig);
 
+//Init authorization
 export const auth = getAuth(app);
 
-//Init storage fot post's images
-
+//Init storage
 export const storage = getStorage(app);
 
+//Init Firestore database
+export const db = getFirestore(app);

@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Camera, CameraType } from 'expo-camera';
 import * as Location from 'expo-location';
 import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
-import { storage } from '../../../firebase/config';
-
+import { storage, db } from '../../../firebase/config';
+import { collection, addDoc } from 'firebase/firestore';
 import {
   View,
   Text,
@@ -18,7 +19,8 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import uuid from 'react-native-uuid';
+import Toast from 'react-native-toast-message';
+
 //icons
 import { FontAwesome } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
@@ -35,7 +37,8 @@ export const CreatePostScreen = ({ navigation }) => {
   const [isKeyboardShown, setIsKeyboardShown] = useState(false);
   const [coords, setCoords] = useState(null);
 
-  const toast = useToast();
+  const { userId, nickname } = useSelector(state => state.auth)
+
 
   useEffect(() => {
     (async () => {
@@ -76,14 +79,6 @@ export const CreatePostScreen = ({ navigation }) => {
     );
   }
 
-  const getAddress = async () => {
-    const address = await Location.reverseGeocodeAsync({
-      latitude: coords.coords.latitude,
-      longitude: coords.coords.longitude,
-    });
-    setLocation(`${address[0].city}, ${address[0].country}`);
-  };
-
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -102,6 +97,14 @@ export const CreatePostScreen = ({ navigation }) => {
     setType(current =>
       current === CameraType.back ? CameraType.front : CameraType.back
     );
+  };
+
+  const getAddress = async () => {
+    const address = await Location.reverseGeocodeAsync({
+      latitude: coords.coords.latitude,
+      longitude: coords.coords.longitude,
+    });
+    setLocation(`${address[0].city}, ${address[0].country}`);
   };
 
   const takePhoto = async () => {
@@ -124,24 +127,34 @@ export const CreatePostScreen = ({ navigation }) => {
     const photoUrl = await getDownloadURL(
       ref(storage, `photos/${file._data.blobId}`)
     );
-    console.log(photoUrl)
+    return photoUrl;
+  };
+
+  const uploadPost = async () => {
+    const photo = await uploadPhoto();
+    console.log(photo);
+    await addDoc(collection(db, 'posts'), {
+      userId,
+      nickname,
+      photo,
+      title,
+      location,
+      coords: coords.coords,
+    });
   };
 
   const onSubmit = () => {
     if (title === '' ?? photo) {
-      return toast.show('There are must be photo and title');
+      return Toast.show({
+        type: 'error',
+        text1: 'There are must be photo and title',
+      });
     }
-    uploadPhoto();
-    // navigation.navigate('DefaultScreen', {
-    //   id: uuid.v4(),
-    //   photo,
-    //   title,
-    //   location,
-    //   coords,
-    // });
-    // resetPhotoState();
-    // setTitle('');
-    // setLocation('');
+    uploadPost();
+    navigation.navigate('DefaultScreen');
+    resetPhotoState();
+    setTitle('');
+    setLocation('');
   };
 
   return (
