@@ -31,7 +31,7 @@ export const RegistrationScreen = ({ navigation }) => {
   const [mail, setMail] = useState('');
   const [password, setPassword] = useState('');
   const [isKeyboardShown, setIsKeyboardShown] = useState(false);
-  const [avatarUrl, setAvatarUrl] = useState('')
+
 
   const dispatch = useDispatch();
 
@@ -58,7 +58,6 @@ export const RegistrationScreen = ({ navigation }) => {
     setAvatar(null);
     setMail('');
     setPassword('');
-    setAvatarUrl('')
   };
 
   const uploadPhoto = async () => {
@@ -69,19 +68,21 @@ export const RegistrationScreen = ({ navigation }) => {
       await uploadBytes(ref(storage, `avatars/${file._data.blobId}`), file);
       // get photo url
       const photoUrl = await getDownloadURL(
-        ref(storage, `photos/${file._data.blobId}`)
+        ref(storage, `avatars/${file._data.blobId}`)
       );
-      setAvatarUrl(photoUrl)
+      return photoUrl;
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (mail === '' && password === '' && login === '') {
       return Toast.show({ type: 'error', text1: 'Fill in all fields' });
     }
-    dispatch(authSignUpUser({ mail, password, login, photoUrl }));
+    const avatar = await uploadPhoto();
+    console.log(avatar)
+    // dispatch(authSignUpUser({ mail, password, login }));
     formReset();
   };
 

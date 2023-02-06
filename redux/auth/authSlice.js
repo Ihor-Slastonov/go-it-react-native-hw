@@ -7,6 +7,7 @@ const initialState = {
   nickname: null,
   stateChange: false,
   email: null,
+  avatar: null,
 };
 
 const authSlice = createSlice({
@@ -42,6 +43,7 @@ const authSlice = createSlice({
       state.nickname = null;
       state.stateChange = false;
       state.email = null;
+      state.avatar = null;
     },
   },
 });
