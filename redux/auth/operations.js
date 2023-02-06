@@ -53,6 +53,7 @@ export const authStateChanged = () => dispatch => {
           userId: user.uid,
           nickname: user.displayName,
           email: user.email,
+          avatar: user.photoURL,
         };
         dispatch(stateChange(updateInfo));
       }
