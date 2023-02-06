@@ -25,7 +25,6 @@ import Toast from 'react-native-toast-message';
 import { FontAwesome } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
-import { useToast } from 'react-native-toast-notifications';
 
 export const CreatePostScreen = ({ navigation }) => {
   const [type, setType] = useState(CameraType.back);
@@ -37,8 +36,7 @@ export const CreatePostScreen = ({ navigation }) => {
   const [isKeyboardShown, setIsKeyboardShown] = useState(false);
   const [coords, setCoords] = useState(null);
 
-  const { userId, nickname } = useSelector(state => state.auth)
-
+  const { userId, nickname } = useSelector(state => state.auth);
 
   useEffect(() => {
     (async () => {
@@ -80,16 +78,19 @@ export const CreatePostScreen = ({ navigation }) => {
   }
 
   const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+    try {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
 
-    if (!result.canceled) {
-      setPhoto(result.assets[0].uri);
+      if (!result.canceled) {
+        setPhoto(result.assets[0].uri);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -100,17 +101,25 @@ export const CreatePostScreen = ({ navigation }) => {
   };
 
   const getAddress = async () => {
-    const address = await Location.reverseGeocodeAsync({
-      latitude: coords.coords.latitude,
-      longitude: coords.coords.longitude,
-    });
-    setLocation(`${address[0].city}, ${address[0].country}`);
+    try {
+      const address = await Location.reverseGeocodeAsync({
+        latitude: coords.coords.latitude,
+        longitude: coords.coords.longitude,
+      });
+      setLocation(`${address[0].city}, ${address[0].country}`);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const takePhoto = async () => {
-    const photo = await cameraRef.takePictureAsync();
-    setPhoto(photo.uri);
-    getAddress();
+    try {
+      const photo = await cameraRef.takePictureAsync();
+      setPhoto(photo.uri);
+      getAddress();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const resetPhotoState = () => {
@@ -119,28 +128,36 @@ export const CreatePostScreen = ({ navigation }) => {
   };
 
   const uploadPhoto = async () => {
-    // Uploading photo
-    const response = await fetch(photo);
-    const file = await response.blob();
-    await uploadBytes(ref(storage, `photos/${file._data.blobId}`), file);
-    // get photo url
-    const photoUrl = await getDownloadURL(
-      ref(storage, `photos/${file._data.blobId}`)
-    );
-    return photoUrl;
+    try {
+      // Uploading photo
+      const response = await fetch(photo);
+      const file = await response.blob();
+      await uploadBytes(ref(storage, `photos/${file._data.blobId}`), file);
+      // get photo url
+      const photoUrl = await getDownloadURL(
+        ref(storage, `photos/${file._data.blobId}`)
+      );
+      return photoUrl;
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const uploadPost = async () => {
-    const photo = await uploadPhoto();
-    console.log(photo);
-    await addDoc(collection(db, 'posts'), {
-      userId,
-      nickname,
-      photo,
-      title,
-      location,
-      coords: coords.coords,
-    });
+    try {
+      const photo = await uploadPhoto();
+      console.log(photo);
+      await addDoc(collection(db, 'posts'), {
+        userId,
+        nickname,
+        photo,
+        title,
+        location,
+        coords: coords.coords,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const onSubmit = () => {
