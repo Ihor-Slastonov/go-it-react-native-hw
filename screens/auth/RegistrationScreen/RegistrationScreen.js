@@ -81,8 +81,7 @@ export const RegistrationScreen = ({ navigation }) => {
       return Toast.show({ type: 'error', text1: 'Fill in all fields' });
     }
     const avatar = await uploadPhoto();
-    console.log(avatar)
-    // dispatch(authSignUpUser({ mail, password, login }));
+    dispatch(authSignUpUser({ mail, password, login, avatar }));
     formReset();
   };
 
