@@ -1,4 +1,12 @@
 import { useEffect, useState } from 'react';
+import { db, app } from '../../../firebase/config';
+import {
+  collection,
+  query,
+  where,
+  onSnapshot,
+  getDocs,
+} from 'firebase/firestore';
 import {
   View,
   Text,
@@ -6,36 +14,43 @@ import {
   Image,
   FlatList,
   SafeAreaView,
+  Button,
 } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { PostsScreenCard } from '../../../components/PostsScreenCard/PostsScreenCard';
 
-export const DefaultPostsScreen = ({ route, navigation }) => {
+export const DefaultPostsScreen = ({ navigation }) => {
   const [posts, setPosts] = useState([]);
 
-  const {nickname,email, avatar} = useSelector(state => state.auth);
+  const { nickname, email, avatar } = useSelector(state => state.auth);
 
-  useEffect(() => {
-    if (route.params) {
-      setPosts(prevState => [route.params, ...prevState]);
-    }
-  }, [route.params]);
+  const getPosts = async () => {
+    const q = query(collection(db, 'posts'));
+    const unsubscribe = onSnapshot(q, querySnapshot => {
+      const allPosts = [];
+      querySnapshot.forEach(doc => {
+        console.log(doc.id, doc.data())
+        allPosts.push(doc.data());
+      });
+      console.log(allPosts);
+    });
+  };
+
+  useEffect(() => {}, []);
 
   return (
     <View style={styles.container}>
       <View style={styles.avatarContainer}>
         <View>
-          <Image
-            source={{uri: avatar}}
-            style={styles.avatar}
-          />
+          <Image source={{ uri: avatar }} style={styles.avatar} />
         </View>
         <View style={styles.userInfo}>
           <Text style={styles.username}>{nickname}</Text>
           <Text style={styles.userEmail}>{email}</Text>
         </View>
       </View>
+      <Button title="Click" onPress={getPosts} />
       <SafeAreaView style={{ flex: 1 }}>
         <FlatList
           data={posts}
