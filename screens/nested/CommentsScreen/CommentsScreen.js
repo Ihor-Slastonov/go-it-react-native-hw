@@ -34,7 +34,9 @@ export const CommentsScreen = ({ route }) => {
   }, []);
 
   const handleSetComment = text => setComment(text);
-
+  const handleSubmit = () => {
+    setComment('');
+  };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
