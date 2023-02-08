@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { db } from '../../../firebase/config';
 import { collection, addDoc } from 'firebase/firestore';
+import { useSelector } from 'react-redux';
 import {
   View,
   KeyboardAvoidingView,
@@ -18,11 +19,15 @@ import { AntDesign } from '@expo/vector-icons';
 export const CommentsScreen = ({ route }) => {
   const [isKeyboardShown, setIsKeyboardShown] = useState(false);
   const [comment, setComment] = useState('');
+  const [first, setfirst] = useState(second)
 
+  const { avatar, nickname } = useSelector(state => state.auth);
   const { photo, postId } = route.params;
-  console.log(postId);
 
   useEffect(() => {
+
+
+
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
       setIsKeyboardShown(true);
     });
@@ -38,7 +43,12 @@ export const CommentsScreen = ({ route }) => {
 
   const handleSetComment = text => setComment(text);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    await addDoc(collection(db, 'posts', postId, 'comments'), {
+      comment,
+      avatar,
+      nickname,
+    });
     setComment('');
   };
   return (
