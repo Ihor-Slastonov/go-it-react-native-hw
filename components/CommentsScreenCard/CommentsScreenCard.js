@@ -3,8 +3,6 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 
 export const CommentsScreenCard = ({ avatar, comment, nickname }) => {
   const username = useSelector(state => state.auth.nickname);
-  console.log(nickname);
-  console.log(username);
 
   return (
     <View style={styles.container}>

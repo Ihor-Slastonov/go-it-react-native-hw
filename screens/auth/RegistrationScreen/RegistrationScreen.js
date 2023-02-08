@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { authSignUpUser } from '../../../redux/auth/operations';
 import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
-import { storage, db } from '../../../firebase/config';
+import { storage } from '../../../firebase/config';
 
 import { AntDesign } from '@expo/vector-icons';
 import Toast from 'react-native-toast-message';

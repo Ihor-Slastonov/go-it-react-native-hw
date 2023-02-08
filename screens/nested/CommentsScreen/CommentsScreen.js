@@ -34,7 +34,10 @@ export const CommentsScreen = ({ route }) => {
   const { photo, postId } = route.params;
 
   useEffect(() => {
-    const q = query(collection(db, 'posts', postId, 'comments'));
+    const q = query(
+      collection(db, 'posts', postId, 'comments'),
+      orderBy('date')
+    );
     const unsubscribe = onSnapshot(q, querySnapshot => {
       const comments = [];
       querySnapshot.forEach(doc => {
@@ -64,6 +67,7 @@ export const CommentsScreen = ({ route }) => {
       comment,
       avatar,
       nickname,
+      date: Date.now(),
     });
     setComment('');
   };
@@ -72,7 +76,6 @@ export const CommentsScreen = ({ route }) => {
       <View
         style={{
           ...styles.container,
-          paddingBottom: isKeyboardShown ? 77 : 16,
         }}
       >
         <Image
@@ -120,6 +123,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
     backgroundColor: '#fff',
+    paddingBottom: 16,
   },
   photo: {
     marginTop: 32,
@@ -128,7 +132,6 @@ const styles = StyleSheet.create({
     height: 240,
     borderRadius: 8,
   },
-  inputContainer: {},
   inputComment: {
     padding: 16,
     width: '100%',
