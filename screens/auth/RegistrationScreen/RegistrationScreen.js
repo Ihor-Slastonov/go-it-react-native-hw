@@ -32,7 +32,6 @@ export const RegistrationScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [isKeyboardShown, setIsKeyboardShown] = useState(false);
 
-
   const dispatch = useDispatch();
 
   useEffect(() => {

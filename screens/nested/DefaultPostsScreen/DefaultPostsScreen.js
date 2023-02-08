@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { db } from '../../../firebase/config';
-import { collection, query, onSnapshot , orderBy} from 'firebase/firestore';
+import { collection, query, onSnapshot, orderBy } from 'firebase/firestore';
 import {
   View,
   Text,
@@ -53,6 +53,7 @@ export const DefaultPostsScreen = ({ navigation }) => {
               location={item.location}
               navigation={navigation}
               coords={item.coords}
+              postId={item.id}
             />
           )}
           keyExtractor={item => item.id}

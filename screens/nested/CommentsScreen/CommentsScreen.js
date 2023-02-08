@@ -17,7 +17,9 @@ import { AntDesign } from '@expo/vector-icons';
 export const CommentsScreen = ({ route }) => {
   const [isKeyboardShown, setIsKeyboardShown] = useState(false);
   const [comment, setComment] = useState('');
-  const { photo } = route.params;
+
+  const { photo, postId } = route.params;
+  console.log(postId);
 
   useEffect(() => {
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
@@ -39,21 +41,34 @@ export const CommentsScreen = ({ route }) => {
   };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.container}>
-        <Image source={{ uri: photo }} style={styles.photo} />
+      <View
+        style={{
+          ...styles.container,
+          //   paddingBottom: isKeyboardShown ? 77 : 16,
+        }}
+      >
+        <Image
+          source={{ uri: photo }}
+          style={{
+            ...styles.photo,
+            display: isKeyboardShown ? 'none' : 'flex',
+          }}
+        />
         <View style={{ flex: 1 }}></View>
-        <View style={styles.inputContainer}>
-          <TextInput
-            value={comment}
-            onChangeText={handleSetComment}
-            style={styles.inputComment}
-            placeholder="Write comment"
-            placeholderTextColor={'#BDBDBD'}
-          />
-          <TouchableOpacity style={styles.submit}>
-            <AntDesign name="arrowup" size={24} color="#ffffff" />
-          </TouchableOpacity>
-        </View>
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : ''}>
+          <View style={styles.inputContainer}>
+            <TextInput
+              value={comment}
+              onChangeText={handleSetComment}
+              style={styles.inputComment}
+              placeholder="Write comment"
+              placeholderTextColor={'#BDBDBD'}
+            />
+            <TouchableOpacity style={styles.submit} onPress={handleSubmit}>
+              <AntDesign name="arrowup" size={24} color="#ffffff" />
+            </TouchableOpacity>
+          </View>
+        </KeyboardAvoidingView>
       </View>
     </TouchableWithoutFeedback>
   );
