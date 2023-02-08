@@ -15,7 +15,7 @@ export const PostsScreenCard = ({
       <Text style={styles.title}>{title}</Text>
       <View style={styles.bottomContainer}>
         <View style={styles.comments}>
-          <TouchableOpacity onPress={() => navigation.navigate('Comments')}>
+          <TouchableOpacity onPress={() => navigation.navigate('Comments',{photo})}>
             <Feather name="message-circle" size={24} color="#BDBDBD" />
           </TouchableOpacity>
           <Text style={styles.commentsQuantity}> 0</Text>

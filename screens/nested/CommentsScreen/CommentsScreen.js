@@ -1,17 +1,21 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 
-export const CommentsScreen = () => {
-    return (
-        <View style={styles.container}>
-            <Text>CommentsScreen</Text>
-        </View>
-    );
+export const CommentsScreen = ({ route }) => {
+  const { photo } = route.params;
+  return (
+    <View style={styles.container}>
+      <Image source={{ uri: photo }} style={styles.photo} />
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    }
-})
+  container: {
+    flex: 1,
+    paddingHorizontal: 16,
+  },
+  photo: {
+    width: '100%',
+    height: 240,
+  },
+});
