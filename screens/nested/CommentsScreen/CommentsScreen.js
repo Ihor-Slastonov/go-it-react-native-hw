@@ -1,6 +1,12 @@
 import { useState, useEffect } from 'react';
 import { db } from '../../../firebase/config';
-import { collection, addDoc } from 'firebase/firestore';
+import {
+  collection,
+  addDoc,
+  query,
+  onSnapshot,
+  orderBy,
+} from 'firebase/firestore';
 import { useSelector } from 'react-redux';
 import {
   View,
@@ -12,21 +18,30 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  Text,
+  FlatList,
 } from 'react-native';
+import { CommentsScreenCard } from '../../../components/CommentsScreenCard/CommentsScreenCard';
 
 import { AntDesign } from '@expo/vector-icons';
 
 export const CommentsScreen = ({ route }) => {
   const [isKeyboardShown, setIsKeyboardShown] = useState(false);
   const [comment, setComment] = useState('');
-  const [first, setfirst] = useState(second)
+  const [allComments, setAllComments] = useState([]);
 
   const { avatar, nickname } = useSelector(state => state.auth);
   const { photo, postId } = route.params;
 
   useEffect(() => {
-
-
+    const q = query(collection(db, 'posts', postId, 'comments'));
+    const unsubscribe = onSnapshot(q, querySnapshot => {
+      const comments = [];
+      querySnapshot.forEach(doc => {
+        comments.push({ ...doc.data(), id: doc.id });
+      });
+      setAllComments(comments);
+    });
 
     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
       setIsKeyboardShown(true);
@@ -36,6 +51,7 @@ export const CommentsScreen = ({ route }) => {
     });
 
     return () => {
+      unsubscribe();
       showSubscription.remove();
       hideSubscription.remove();
     };
@@ -56,7 +72,7 @@ export const CommentsScreen = ({ route }) => {
       <View
         style={{
           ...styles.container,
-          //   paddingBottom: isKeyboardShown ? 77 : 16,
+          paddingBottom: isKeyboardShown ? 77 : 16,
         }}
       >
         <Image
@@ -66,7 +82,20 @@ export const CommentsScreen = ({ route }) => {
             display: isKeyboardShown ? 'none' : 'flex',
           }}
         />
-        <View style={{ flex: 1 }}></View>
+
+        <View style={{ flex: 1, marginBottom: 30 }}>
+          <FlatList
+            data={allComments}
+            renderItem={({ item }) => (
+              <CommentsScreenCard
+                avatar={item.avatar}
+                comment={item.comment}
+                nickname={item.nickname}
+              />
+            )}
+            keyExtractor={item => item.id}
+          />
+        </View>
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : ''}>
           <View style={styles.inputContainer}>
             <TextInput
@@ -91,7 +120,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
     backgroundColor: '#fff',
-    paddingBottom: 16,
   },
   photo: {
     marginTop: 32,
