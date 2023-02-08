@@ -154,6 +154,7 @@ export const CreatePostScreen = ({ navigation }) => {
         title,
         location,
         coords: coords.coords,
+        date: Date.now()
       });
     } catch (error) {
       console.log(error);
@@ -161,7 +162,7 @@ export const CreatePostScreen = ({ navigation }) => {
   };
 
   const onSubmit = () => {
-    if (title === '' ?? photo) {
+    if (title === '' && photo && location === '') {
       return Toast.show({
         type: 'error',
         text1: 'There are must be photo and title',

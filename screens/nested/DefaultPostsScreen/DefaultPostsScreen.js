@@ -1,12 +1,6 @@
 import { useEffect, useState } from 'react';
-import { db, app } from '../../../firebase/config';
-import {
-  collection,
-  query,
-  where,
-  onSnapshot,
-  getDocs,
-} from 'firebase/firestore';
+import { db } from '../../../firebase/config';
+import { collection, query, onSnapshot , orderBy} from 'firebase/firestore';
 import {
   View,
   Text,
@@ -14,7 +8,6 @@ import {
   Image,
   FlatList,
   SafeAreaView,
-  Button,
 } from 'react-native';
 import { useSelector } from 'react-redux';
 
@@ -22,35 +15,22 @@ import { PostsScreenCard } from '../../../components/PostsScreenCard/PostsScreen
 
 export const DefaultPostsScreen = ({ navigation }) => {
   const [posts, setPosts] = useState([]);
-  const [test, setTest] = useState([]);
 
   const { nickname, email, avatar } = useSelector(state => state.auth);
 
-  const getPosts = async () => {
+  useEffect(() => {
     const q = query(collection(db, 'posts'));
     const unsubscribe = onSnapshot(q, querySnapshot => {
       const allPosts = [];
       querySnapshot.forEach(doc => {
         allPosts.push({ ...doc.data(), id: doc.id });
       });
-      setTest(allPosts);
+      setPosts(allPosts);
     });
-  };
-
-useEffect(() => {
-  const q = query(collection(db, 'posts'));
-  const unsubscribe = onSnapshot(q, querySnapshot => {
-    const allPosts = [];
-    querySnapshot.forEach(doc => {
-      allPosts.push({ ...doc.data(), id: doc.id });
-    });
-    setTest(allPosts);
-  });
-  return () => {
-    unsubscribe();
-  }
-}, [])
-
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -65,7 +45,7 @@ useEffect(() => {
       </View>
       <SafeAreaView style={{ flex: 1 }}>
         <FlatList
-          data={test}
+          data={posts}
           renderItem={({ item }) => (
             <PostsScreenCard
               photo={item.photo}
