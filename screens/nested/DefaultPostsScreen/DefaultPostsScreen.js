@@ -28,8 +28,7 @@ export const DefaultPostsScreen = ({ navigation }) => {
 
   const getPosts = async () => {
     const q = query(collection(db, 'posts'));
-    onSnapshot(q, querySnapshot => {
-      // setTest([]);
+    const unsubscribe = onSnapshot(q, querySnapshot => {
       const allPosts = [];
       querySnapshot.forEach(doc => {
         allPosts.push({ ...doc.data(), id: doc.id });
@@ -38,9 +37,20 @@ export const DefaultPostsScreen = ({ navigation }) => {
     });
   };
 
-  useEffect(() => {
-    getPosts();
-  }, []);
+useEffect(() => {
+  const q = query(collection(db, 'posts'));
+  const unsubscribe = onSnapshot(q, querySnapshot => {
+    const allPosts = [];
+    querySnapshot.forEach(doc => {
+      allPosts.push({ ...doc.data(), id: doc.id });
+    });
+    setTest(allPosts);
+  });
+  return () => {
+    unsubscribe();
+  }
+}, [])
+
 
   return (
     <View style={styles.container}>

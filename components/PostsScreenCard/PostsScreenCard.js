@@ -2,12 +2,16 @@ import { Image, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 //icons
 import { Feather } from '@expo/vector-icons';
 
-export const PostsScreenCard = ({ photo, title, location, navigation, coords }) => {
+export const PostsScreenCard = ({
+  photo,
+  title,
+  location,
+  navigation,
+  coords,
+}) => {
   return (
     <View style={styles.container}>
-      <View style={styles.imageContainer}>
-        <Image source={{ uri: photo }} style={styles.postImage} />
-      </View>
+      <Image source={{ uri: photo }} style={styles.postImage} />
       <Text style={styles.title}>{title}</Text>
       <View style={styles.bottomContainer}>
         <View style={styles.comments}>
@@ -16,10 +20,15 @@ export const PostsScreenCard = ({ photo, title, location, navigation, coords }) 
           </TouchableOpacity>
           <Text style={styles.commentsQuantity}> 0</Text>
         </View>
-        <View >
-          <TouchableOpacity style={styles.location} onPress={() => navigation.navigate('Map',{coords,title,location})}>
+        <View>
+          <TouchableOpacity
+            style={styles.location}
+            onPress={() =>
+              navigation.navigate('Map', { coords, title, location })
+            }
+          >
             <Feather name="map-pin" size={24} color="#BDBDBD" />
-          <Text style={styles.locationTitle}>{location}</Text>
+            <Text style={styles.locationTitle}>{location}</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -31,16 +40,12 @@ const styles = StyleSheet.create({
   container: {
     paddingBottom: 32,
   },
-  imageContainer: {
-    width: '100%',
-    height: 240,
-    borderRadius: 8,
-    marginBottom: 8,
-  },
   postImage: {
     width: '100%',
+    height: 240,
     resizeMode: 'cover',
     borderRadius: 8,
+    marginBottom: 8,
   },
   title: {
     fontFamily: 'Roboto-Medium',
