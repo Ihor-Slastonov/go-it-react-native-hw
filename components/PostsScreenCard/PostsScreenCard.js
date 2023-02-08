@@ -36,7 +36,6 @@ const styles = StyleSheet.create({
     height: 240,
     borderRadius: 8,
     marginBottom: 8,
-    backgroundColor: '#212121',
   },
   postImage: {
     width: '100%',
