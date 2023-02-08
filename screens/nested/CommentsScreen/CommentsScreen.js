@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-
+import { db } from '../../../firebase/config';
+import { collection, addDoc } from 'firebase/firestore';
 import {
   View,
   KeyboardAvoidingView,
@@ -36,6 +37,7 @@ export const CommentsScreen = ({ route }) => {
   }, []);
 
   const handleSetComment = text => setComment(text);
+
   const handleSubmit = () => {
     setComment('');
   };
