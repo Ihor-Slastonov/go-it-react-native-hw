@@ -22,22 +22,25 @@ import { PostsScreenCard } from '../../../components/PostsScreenCard/PostsScreen
 
 export const DefaultPostsScreen = ({ navigation }) => {
   const [posts, setPosts] = useState([]);
+  const [test, setTest] = useState([]);
 
   const { nickname, email, avatar } = useSelector(state => state.auth);
 
   const getPosts = async () => {
     const q = query(collection(db, 'posts'));
-    const unsubscribe = onSnapshot(q, querySnapshot => {
+    onSnapshot(q, querySnapshot => {
+      // setTest([]);
       const allPosts = [];
       querySnapshot.forEach(doc => {
-        console.log(doc.id, doc.data())
-        allPosts.push(doc.data());
+        allPosts.push({ ...doc.data(), id: doc.id });
       });
-      console.log(allPosts);
+      setTest(allPosts);
     });
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    getPosts();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -50,10 +53,9 @@ export const DefaultPostsScreen = ({ navigation }) => {
           <Text style={styles.userEmail}>{email}</Text>
         </View>
       </View>
-      <Button title="Click" onPress={getPosts} />
       <SafeAreaView style={{ flex: 1 }}>
         <FlatList
-          data={posts}
+          data={test}
           renderItem={({ item }) => (
             <PostsScreenCard
               photo={item.photo}
