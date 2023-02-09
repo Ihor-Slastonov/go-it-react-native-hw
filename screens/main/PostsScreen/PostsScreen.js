@@ -15,7 +15,7 @@ export const PostsScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
   return (
-    <NestedScreen.Navigator initialRouteName="DefaultScreen">
+    <NestedScreen.Navigator initialRouteName="Posts">
       <NestedScreen.Screen
         name="DefaultScreen"
         component={DefaultPostsScreen}

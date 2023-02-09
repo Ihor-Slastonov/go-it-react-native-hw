@@ -66,6 +66,7 @@ export const CommentsScreen = ({ route }) => {
     const date = new Date();
     const month = date.toLocaleString('default', { month: 'long' });
     const fullDate = `${date.getDate()} ${month} ${date.getFullYear()} | ${date.getHours()}:${date.getMinutes()}`;
+
     await addDoc(collection(db, 'posts', postId, 'comments'), {
       comment,
       avatar,

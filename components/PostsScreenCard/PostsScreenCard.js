@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
-import { collection, getCountFromServer } from 'firebase/firestore';
+import {
+  collection, getCountFromServer, doc,
+  updateDoc, } from 'firebase/firestore';
 import { db } from '../../firebase/config';
 import { Image, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 //icons
 import { Feather } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 
 export const PostsScreenCard = ({
   photo,
@@ -12,8 +15,10 @@ export const PostsScreenCard = ({
   navigation,
   coords,
   postId,
+  likes
 }) => {
   const [count, setCount] = useState(null);
+  const [isLike, setIsLike] = useState(false);
 
   const getCommentsCount = async () => {
     try {
@@ -29,6 +34,21 @@ export const PostsScreenCard = ({
     getCommentsCount();
   }, []);
 
+  const onLike = async () => {
+    setIsLike(!isLike);
+
+    if (isLike) {
+      await updateDoc(doc(db, 'posts', postId), {
+        like: likes - 1,
+      });
+      return;
+    }
+    await updateDoc(doc(db, 'posts', postId), {
+      like: likes ? likes + 1 : 1,
+    });
+    return;
+  };
+
   return (
     <View style={styles.container}>
       <Image source={{ uri: photo }} style={styles.postImage} />
@@ -42,6 +62,17 @@ export const PostsScreenCard = ({
           </TouchableOpacity>
           <Text style={styles.commentsQuantity}> {count}</Text>
         </View>
+        <TouchableOpacity
+          onPress={onLike}
+          style={{ flexDirection: 'row', alignItems: 'center' }}
+        >
+          {isLike ? (
+            <AntDesign name="like1" size={24} color="#FF6C00" />
+          ) : (
+            <AntDesign name="like2" size={24} color="#FF6C00" />
+          )}
+          <Text style={styles.quantity}> {likes ? likes : 0}</Text>
+        </TouchableOpacity>
         <View>
           <TouchableOpacity
             style={styles.location}

@@ -34,7 +34,7 @@ export const ProfilePostCard = ({
       return;
     }
     await updateDoc(doc(db, 'posts', postId), {
-      like: likes + 1,
+      like: likes ? likes + 1 : 1,
     });
     return;
   };
@@ -71,7 +71,7 @@ export const ProfilePostCard = ({
           style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 24 }}
         >
           {isLike ? (
-            <AntDesign name="like1" size={24} color="black" />
+            <AntDesign name="like1" size={24} color="#FF6C00" />
           ) : (
             <AntDesign name="like2" size={24} color="#FF6C00" />
           )}
