@@ -17,12 +17,20 @@ export const ProfileScreen = () => {
       <NestedScreen.Screen
         name="ProfileMap"
         component={MapScreen}
-        options={{ headerTitle: 'Map', headerTitleAlign: 'center' }}
+        options={{
+          headerTitle: 'Map',
+          headerTitleAlign: 'center',
+          headerLeftLabelVisible: false,
+        }}
       />
       <NestedScreen.Screen
         name="ProfileComments"
         component={CommentsScreen}
-        options={{ headerTitle: 'Comments', headerTitleAlign: 'center' }}
+        options={{
+          headerTitle: 'Comments',
+          headerTitleAlign: 'center',
+          headerLeftLabelVisible: false,
+        }}
       />
     </NestedScreen.Navigator>
   );
