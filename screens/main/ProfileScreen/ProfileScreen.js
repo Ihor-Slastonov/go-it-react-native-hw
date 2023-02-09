@@ -1,5 +1,16 @@
+import { authSingOutUser } from '../../../redux/auth/operations';
+import { useDispatch } from 'react-redux';
 import * as ImagePicker from 'expo-image-picker';
 import { useState, useEffect } from 'react';
+import { db } from '../../../firebase/config';
+import {
+  collection,
+  query,
+  onSnapshot,
+  orderBy,
+  where,
+} from 'firebase/firestore';
+import { useSelector } from 'react-redux';
 import {
   View,
   Text,
@@ -15,60 +26,30 @@ import { ProfilePostCard } from '../../../components/ProfilePostCard/ProfilePost
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 
-const POSTS = [
-  {
-    id: '1',
-    url: require('../../../assets/images/lake.png'),
-    title: 'Lake',
-    mapMark: 'Ukraine',
-  },
-  {
-    id: '2',
-    url: require('../../../assets/images/forest.png'),
-    title: 'Forest',
-    mapMark: 'Ukraine',
-  },
-  {
-    id: '3',
-    url: require('../../../assets/images/lake.png'),
-    title: 'Lake',
-    mapMark: 'Ukraine',
-  },
-  {
-    id: '4',
-    url: require('../../../assets/images/forest.png'),
-    title: 'Forest',
-    mapMark: 'Ukraine',
-  },
-  {
-    id: '5',
-    url: require('../../../assets/images/lake.png'),
-    title: 'Lake',
-    mapMark: 'Ukraine',
-  },
-  {
-    id: '6',
-    url: require('../../../assets/images/forest.png'),
-    title: 'Forest',
-    mapMark: 'Ukraine',
-  },
-  {
-    id: '7',
-    url: require('../../../assets/images/lake.png'),
-    title: 'Lake',
-    mapMark: 'Ukraine',
-  },
-  {
-    id: '8',
-    url: require('../../../assets/images/forest.png'),
-    title: 'Forest',
-    mapMark: 'Ukraine',
-  },
-];
 const imageBg = require('../../../assets/images/auth-bg.png');
 
 export const ProfileScreen = ({ navigation }) => {
-  const [avatar, setAvatar] = useState(null);
+  const [photo, setPhoto] = useState(null);
+  const [posts, setPosts] = useState([]);
+
+  const { nickname, avatar, userId } = useSelector(state => state.auth);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setPhoto(avatar);
+    const q = query(collection(db, 'posts'), where('userId','==', userId));
+    const unsubscribe = onSnapshot(q, querySnapshot => {
+      const allPosts = [];
+      querySnapshot.forEach(doc => {
+        allPosts.push({ ...doc.data(), id: doc.id });
+      });
+      setPosts(allPosts);
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -80,8 +61,7 @@ export const ProfileScreen = ({ navigation }) => {
     });
 
     if (!result.canceled) {
-      setAvatar(result.assets[0].uri);
-      console.log(avatar);
+      setPhoto(result.assets[0].uri);
     }
   };
 
@@ -91,11 +71,11 @@ export const ProfileScreen = ({ navigation }) => {
         <View style={styles.profileContainer}>
           {/* ---------------------- Блок Аватар ---------------------- */}
           <View style={styles.avatar}>
-            <Image source={{ uri: avatar }} style={styles.avatarImg} />
-            {avatar ? (
+            <Image source={{ uri: photo }} style={styles.avatarImg} />
+            {photo ? (
               <Pressable
                 onPress={() => {
-                  setAvatar(null);
+                  setPhoto(null);
                 }}
               >
                 <View style={styles.removeAvatarIcon}>
@@ -113,19 +93,22 @@ export const ProfileScreen = ({ navigation }) => {
           {/* --------------------------------------------------------- */}
           <Pressable
             style={styles.logoutIcon}
-            onPress={() => navigation.navigate('Login')}
+            onPress={() => dispatch(authSingOutUser())}
           >
             <MaterialIcons name="logout" size={24} color="#BDBDBD" />
           </Pressable>
-          <Text style={styles.username}>Natali Romanova</Text>
+          <Text style={styles.username}>{nickname}</Text>
           <SafeAreaView style={{ flex: 1, width: '100%', marginTop: 32 }}>
             <FlatList
-              data={POSTS}
+              data={posts}
               renderItem={({ item }) => (
                 <ProfilePostCard
-                  url={item.url}
+                  photo={item.photo}
                   title={item.title}
-                  mapMark={item.mapMark}
+                  location={item.location}
+                  navigation={navigation}
+                  coords={item.coords}
+                  postId={item.id}
                 />
               )}
               keyExtractor={item => item.id}
@@ -150,7 +133,7 @@ const styles = StyleSheet.create({
   profileContainer: {
     paddingHorizontal: 16,
     width: '100%',
-    height: "85%",
+    height: '85%',
     backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,

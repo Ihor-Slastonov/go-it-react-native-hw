@@ -4,10 +4,10 @@ import { Feather } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
-export const ProfilePostCard = ({ url, title, mapMark }) => {
+export const ProfilePostCard = ({ photo, title, mapMark }) => {
   return (
     <View style={styles.container}>
-      <Image source={url} style={styles.postImage} />
+      <Image source={{uri: photo}} style={styles.postImage} />
       <Text style={styles.title}>{title}</Text>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>

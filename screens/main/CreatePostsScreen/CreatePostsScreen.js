@@ -154,7 +154,7 @@ export const CreatePostScreen = ({ navigation }) => {
         title,
         location,
         coords: coords.coords,
-        date: Date.now(),
+        date: Date.now().toString(),
       });
     } catch (error) {
       console.log(error);
