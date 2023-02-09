@@ -4,7 +4,7 @@ import { Feather } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
-export const ProfilePostCard = ({ photo, title, mapMark }) => {
+export const ProfilePostCard = ({ photo, title, location, navigation, coords, postId }) => {
   return (
     <View style={styles.container}>
       <Image source={{uri: photo}} style={styles.postImage} />
@@ -28,7 +28,7 @@ export const ProfilePostCard = ({ photo, title, mapMark }) => {
           }}
         >
           <Feather name="map-pin" size={24} color="#BDBDBD" />
-          <Text style={styles.locationTitle}>{mapMark}</Text>
+          <Text style={styles.locationTitle}>{location}</Text>
         </View>
       </View>
     </View>

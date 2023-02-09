@@ -1,3 +1,6 @@
+import { useState, useEffect } from 'react';
+import { collection, getCountFromServer } from 'firebase/firestore';
+import { db } from '../../firebase/config';
 import { Image, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 //icons
 import { Feather } from '@expo/vector-icons';
@@ -10,6 +13,18 @@ export const PostsScreenCard = ({
   coords,
   postId,
 }) => {
+  const [count, setCount] = useState(null);
+
+  const getCommentsCount = async () => {
+    const coll = collection(db, 'posts', postId, 'comments');
+    const snapshot = await getCountFromServer(coll);
+    setCount(snapshot.data().count);
+  };
+
+  useEffect(() => {
+    getCommentsCount();
+  }, []);
+
   return (
     <View style={styles.container}>
       <Image source={{ uri: photo }} style={styles.postImage} />
@@ -21,7 +36,7 @@ export const PostsScreenCard = ({
           >
             <Feather name="message-circle" size={24} color="#BDBDBD" />
           </TouchableOpacity>
-          <Text style={styles.commentsQuantity}> 0</Text>
+          <Text style={styles.commentsQuantity}> {count}</Text>
         </View>
         <View>
           <TouchableOpacity

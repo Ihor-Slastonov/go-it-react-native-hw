@@ -1,6 +1,12 @@
 import { useEffect, useState } from 'react';
 import { db } from '../../../firebase/config';
-import { collection, query, onSnapshot, orderBy } from 'firebase/firestore';
+import {
+  collection,
+  query,
+  onSnapshot,
+  orderBy,
+  getCountFromServer,
+} from 'firebase/firestore';
 import {
   View,
   Text,
@@ -12,6 +18,7 @@ import {
 import { useSelector } from 'react-redux';
 
 import { PostsScreenCard } from '../../../components/PostsScreenCard/PostsScreenCard';
+import { get } from 'react-native/Libraries/Utilities/PixelRatio';
 
 export const DefaultPostsScreen = ({ navigation }) => {
   const [posts, setPosts] = useState([]);
@@ -19,7 +26,7 @@ export const DefaultPostsScreen = ({ navigation }) => {
   const { nickname, email, avatar } = useSelector(state => state.auth);
 
   useEffect(() => {
-    const q = query(collection(db, 'posts'), orderBy('date','desc'));
+    const q = query(collection(db, 'posts'), orderBy('date', 'desc'));
     const unsubscribe = onSnapshot(q, querySnapshot => {
       const allPosts = [];
       querySnapshot.forEach(doc => {
