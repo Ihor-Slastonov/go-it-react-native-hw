@@ -17,16 +17,16 @@ export const ProfilePostCard = ({
       <Image source={{ uri: photo }} style={styles.postImage} />
       <Text style={styles.title}>{title}</Text>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}>
           <FontAwesome name="comment" size={24} color="#FF6C00" />
           <Text style={styles.quantity}> 0</Text>
-        </View>
-        <View
+        </TouchableOpacity>
+        <TouchableOpacity
           style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 24 }}
         >
           <AntDesign name="like2" size={24} color="#FF6C00" />
           <Text style={styles.quantity}> 0</Text>
-        </View>
+        </TouchableOpacity>
         <TouchableOpacity
           style={{
             flexDirection: 'row',
@@ -34,7 +34,7 @@ export const ProfilePostCard = ({
             marginLeft: 'auto',
           }}
           onPress={() => {
-            navigation.navigate('Map', { coords, title, location });
+            navigation.navigate('ProfileMap', { coords, title, location });
           }}
         >
           <Feather name="map-pin" size={24} color="#BDBDBD" />
