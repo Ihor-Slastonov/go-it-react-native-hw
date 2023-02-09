@@ -1,13 +1,20 @@
-import { Image, Text, View, StyleSheet } from 'react-native';
+import { Image, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 //icons
 import { Feather } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
-export const ProfilePostCard = ({ photo, title, location, navigation, coords, postId }) => {
+export const ProfilePostCard = ({
+  photo,
+  title,
+  location,
+  navigation,
+  coords,
+  postId,
+}) => {
   return (
     <View style={styles.container}>
-      <Image source={{uri: photo}} style={styles.postImage} />
+      <Image source={{ uri: photo }} style={styles.postImage} />
       <Text style={styles.title}>{title}</Text>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -20,16 +27,19 @@ export const ProfilePostCard = ({ photo, title, location, navigation, coords, po
           <AntDesign name="like2" size={24} color="#FF6C00" />
           <Text style={styles.quantity}> 0</Text>
         </View>
-        <View
+        <TouchableOpacity
           style={{
             flexDirection: 'row',
             alignItems: 'center',
             marginLeft: 'auto',
           }}
+          onPress={() => {
+            navigation.navigate('Map', { coords, title, location });
+          }}
         >
           <Feather name="map-pin" size={24} color="#BDBDBD" />
           <Text style={styles.locationTitle}>{location}</Text>
-        </View>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -40,7 +50,7 @@ const styles = StyleSheet.create({
     paddingBottom: 32,
   },
   postImage: {
-    width:"100%",
+    width: '100%',
     marginBottom: 8,
     borderRadius: 8,
     height: 240,
