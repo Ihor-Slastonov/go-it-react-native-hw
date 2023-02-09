@@ -31,12 +31,12 @@ export const ProfilePostCard = ({
       await updateDoc(doc(db, 'posts', postId), {
         like: likes - 1,
       });
-      return
+      return;
     }
     await updateDoc(doc(db, 'posts', postId), {
       like: likes + 1,
     });
-    return
+    return;
   };
 
   const getCommentsCount = async () => {
@@ -70,7 +70,11 @@ export const ProfilePostCard = ({
           onPress={onLike}
           style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 24 }}
         >
-          <AntDesign name="like2" size={24} color="#FF6C00" />
+          {isLike ? (
+            <AntDesign name="like1" size={24} color="black" />
+          ) : (
+            <AntDesign name="like2" size={24} color="#FF6C00" />
+          )}
           <Text style={styles.quantity}> {likes ? likes : 0}</Text>
         </TouchableOpacity>
         <TouchableOpacity
