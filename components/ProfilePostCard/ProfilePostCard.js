@@ -1,4 +1,7 @@
 import { Image, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { useState, useEffect } from 'react';
+import { collection, getCountFromServer } from 'firebase/firestore';
+import { db } from '../../firebase/config';
 //icons
 import { Feather } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
@@ -12,14 +15,30 @@ export const ProfilePostCard = ({
   coords,
   postId,
 }) => {
+  const [count, setCount] = useState(null);
+
+  const getCommentsCount = async () => {
+    const coll = collection(db, 'posts', postId, 'comments');
+    const snapshot = await getCountFromServer(coll);
+    setCount(snapshot.data().count);
+  };
+
+  useEffect(() => {
+    getCommentsCount();
+  }, []);
   return (
     <View style={styles.container}>
       <Image source={{ uri: photo }} style={styles.postImage} />
       <Text style={styles.title}>{title}</Text>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('ProfileComments', { photo, postId })
+          }
+          style={{ flexDirection: 'row', alignItems: 'center' }}
+        >
           <FontAwesome name="comment" size={24} color="#FF6C00" />
-          <Text style={styles.quantity}> 0</Text>
+          <Text style={styles.quantity}> {count}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 24 }}

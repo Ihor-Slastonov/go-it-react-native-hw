@@ -31,7 +31,7 @@ const authSlice = createSlice({
       state.avatar = action.payload.photoURL
     },
     [authSignUpUser.rejected]() {
-      Toast.show({type: "error", text1: 'Wrong email or password'});
+      Toast.show({type: "error", text1: 'Wrong email'});
     },
     [authSignInUser.fulfilled]() {
       Toast.show({ type: "success", text1: `Welcome` });
