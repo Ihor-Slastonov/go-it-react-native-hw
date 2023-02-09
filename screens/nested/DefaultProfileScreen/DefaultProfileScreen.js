@@ -109,6 +109,7 @@ export const DefaultProfileScreen = ({ navigation }) => {
                                     navigation={navigation}
                                     coords={item.coords}
                                     postId={item.id}
+                                    likes={item.like}
                                 />
                             )}
                             keyExtractor={item => item.id}

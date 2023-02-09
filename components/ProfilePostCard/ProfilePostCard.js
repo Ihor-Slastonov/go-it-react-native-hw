@@ -1,6 +1,11 @@
 import { Image, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState, useEffect } from 'react';
-import { collection, getCountFromServer } from 'firebase/firestore';
+import {
+  collection,
+  getCountFromServer,
+  doc,
+  updateDoc,
+} from 'firebase/firestore';
 import { db } from '../../firebase/config';
 //icons
 import { Feather } from '@expo/vector-icons';
@@ -14,13 +19,34 @@ export const ProfilePostCard = ({
   navigation,
   coords,
   postId,
+  likes,
 }) => {
   const [count, setCount] = useState(null);
+  const [isLike, setIsLike] = useState(false);
+
+  const onLike = async () => {
+    setIsLike(!isLike);
+
+    if (isLike) {
+      await updateDoc(doc(db, 'posts', postId), {
+        like: likes - 1,
+      });
+      return
+    }
+    await updateDoc(doc(db, 'posts', postId), {
+      like: likes + 1,
+    });
+    return
+  };
 
   const getCommentsCount = async () => {
-    const coll = collection(db, 'posts', postId, 'comments');
-    const snapshot = await getCountFromServer(coll);
-    setCount(snapshot.data().count);
+    try {
+      const coll = collection(db, 'posts', postId, 'comments');
+      const snapshot = await getCountFromServer(coll);
+      setCount(snapshot.data().count);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -41,10 +67,11 @@ export const ProfilePostCard = ({
           <Text style={styles.quantity}> {count}</Text>
         </TouchableOpacity>
         <TouchableOpacity
+          onPress={onLike}
           style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 24 }}
         >
           <AntDesign name="like2" size={24} color="#FF6C00" />
-          <Text style={styles.quantity}> 0</Text>
+          <Text style={styles.quantity}> {likes ? likes : 0}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={{

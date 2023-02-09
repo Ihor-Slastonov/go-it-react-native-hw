@@ -16,9 +16,13 @@ export const PostsScreenCard = ({
   const [count, setCount] = useState(null);
 
   const getCommentsCount = async () => {
-    const coll = collection(db, 'posts', postId, 'comments');
-    const snapshot = await getCountFromServer(coll);
-    setCount(snapshot.data().count);
+    try {
+      const coll = collection(db, 'posts', postId, 'comments');
+      const snapshot = await getCountFromServer(coll);
+      setCount(snapshot.data().count);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
