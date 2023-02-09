@@ -38,7 +38,7 @@ export const ProfileScreen = ({ navigation }) => {
 
   useEffect(() => {
     setPhoto(avatar);
-    const q = query(collection(db, 'posts'), where('userId','==', userId));
+    const q = query(collection(db, 'posts'), where('userId', '==', userId));
     const unsubscribe = onSnapshot(q, querySnapshot => {
       const allPosts = [];
       querySnapshot.forEach(doc => {

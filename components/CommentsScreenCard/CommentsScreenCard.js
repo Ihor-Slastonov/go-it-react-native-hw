@@ -1,9 +1,9 @@
 import { useSelector } from 'react-redux';
 import { Image, StyleSheet, Text, View } from 'react-native';
 
-export const CommentsScreenCard = ({ avatar, comment, nickname }) => {
+export const CommentsScreenCard = ({ avatar, comment, nickname, date }) => {
   const username = useSelector(state => state.auth.nickname);
-
+  console.log(date);
   return (
     <View style={styles.container}>
       <View
@@ -17,6 +17,14 @@ export const CommentsScreenCard = ({ avatar, comment, nickname }) => {
           style={username === nickname ? styles.userComment : styles.comment}
         >
           <Text style={styles.text}>{comment}</Text>
+          <Text
+            style={{
+              ...styles.date,
+              textAlign: username === nickname ? 'left' : 'right',
+            }}
+          >
+            {date}
+          </Text>
         </View>
       </View>
     </View>
@@ -54,5 +62,11 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
     fontSize: 13,
     color: '#212121',
+  },
+  date: {
+    marginTop: 8,
+    fontFamily: 'Roboto-Regular',
+    fontSize: 10,
+    color: '#BDBDBD',
   },
 });

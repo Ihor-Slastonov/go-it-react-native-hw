@@ -19,7 +19,7 @@ export const DefaultPostsScreen = ({ navigation }) => {
   const { nickname, email, avatar } = useSelector(state => state.auth);
 
   useEffect(() => {
-    const q = query(collection(db, 'posts'), orderBy('date'));
+    const q = query(collection(db, 'posts'), orderBy('date','desc'));
     const unsubscribe = onSnapshot(q, querySnapshot => {
       const allPosts = [];
       querySnapshot.forEach(doc => {

@@ -63,11 +63,15 @@ export const CommentsScreen = ({ route }) => {
   const handleSetComment = text => setComment(text);
 
   const handleSubmit = async () => {
+    const date = new Date();
+    const month = date.toLocaleString('default', { month: 'long' });
+    const fullDate = `${date.getDate()} ${month} ${date.getFullYear()} | ${date.getHours()}:${date.getMinutes()}`;
     await addDoc(collection(db, 'posts', postId, 'comments'), {
       comment,
       avatar,
       nickname,
-      date: Date.now(),
+      date: Date.now().toString(),
+      time: fullDate,
     });
     setComment('');
   };
@@ -94,6 +98,7 @@ export const CommentsScreen = ({ route }) => {
                 avatar={item.avatar}
                 comment={item.comment}
                 nickname={item.nickname}
+                date={item.time}
               />
             )}
             keyExtractor={item => item.id}
