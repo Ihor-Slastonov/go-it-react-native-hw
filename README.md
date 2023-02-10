@@ -5,9 +5,10 @@ In this app we are all friends, so you can share your mind and photos to all! Th
 
 For testing this app:
 1) Download Expo Go from Google Play Store or App Store
-2) You can paste this url `exp://exp.host/@jammik/my-app?release-channel=jam`
-2) Scan this Qr code from Expo Go(if Android OS) or just use you camera(for IOS)
+2) You can paste this url `exp://exp.host/@jammik/my-app?release-channel=slastonov`
+3) Scan this Qr code from Expo Go(if Android OS)
+4)If you are using iOS Expo Go ypu need login to account and use url method
 
-![изображение](https://user-images.githubusercontent.com/104766756/218076489-a19c7445-29b2-4b23-ba4e-532ef872fb30.png)
+![изображение](https://user-images.githubusercontent.com/104766756/218103345-21637196-56d7-4640-bb75-6baaa5056c02.png)
 
 
