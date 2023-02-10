@@ -7,7 +7,7 @@ For testing this app:
 1) Download Expo Go from Google Play Store or App Store
 2) You can paste this url `exp://exp.host/@jammik/my-app?release-channel=slastonov`
 3) Scan this Qr code from Expo Go(if Android OS)
-4)If you are using iOS Expo Go ypu need login to account and use url method
+4)If you are using iOS Expo Go ypu need login to account 
 
 ![изображение](https://user-images.githubusercontent.com/104766756/218103345-21637196-56d7-4640-bb75-6baaa5056c02.png)
 
