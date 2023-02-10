@@ -8,5 +8,6 @@ For testing this app:
 2) You can paste this url `exp://exp.host/@jammik/my-app?release-channel=jam`
 2) Scan this Qr code from Expo Go(if Android OS) or just use you camera(for IOS)
 
-![изображение](https://user-images.githubusercontent.com/104766756/218069186-65b7862a-0016-4e37-b6d4-79ea5aca3161.png)
+![изображение](https://user-images.githubusercontent.com/104766756/218076489-a19c7445-29b2-4b23-ba4e-532ef872fb30.png)
+
 
