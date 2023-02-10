@@ -81,6 +81,7 @@ export const CommentsScreen = ({ route }) => {
       <View
         style={{
           ...styles.container,
+          paddingBottom: isKeyboardShown && Platform.OS === 'ios' ? 140 : 16,
         }}
       >
         <Image
@@ -91,7 +92,7 @@ export const CommentsScreen = ({ route }) => {
           }}
         />
 
-        <View style={{ flex: 1, marginBottom: 30 }}>
+        <View style={{ flex: isKeyboardShown ? 0 : 1, marginBottom: 30 }}>
           <FlatList
             data={allComments}
             renderItem={({ item }) => (
@@ -130,6 +131,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     backgroundColor: '#fff',
     paddingBottom: 16,
+    justifyContent: 'flex-end',
   },
   photo: {
     marginTop: 32,

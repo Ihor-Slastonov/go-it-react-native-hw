@@ -162,11 +162,12 @@ export const CreatePostScreen = ({ navigation }) => {
   };
 
   const onSubmit = () => {
-    if (title === '' && photo && location === '') {
-      return Toast.show({
+    if ( photo === null && location === '') {
+      Toast.show({
         type: 'error',
         text1: 'There are must be photo and title',
       });
+      return;
     }
     uploadPost();
     navigation.navigate('DefaultScreen');
@@ -255,7 +256,6 @@ export const CreatePostScreen = ({ navigation }) => {
           style={{
             ...styles.submitBtn,
             backgroundColor: photo ? '#FF6C00' : '#F6F6F6',
-            display: isKeyboardShown ? 'none' : 'flex',
           }}
           onPress={onSubmit}
         >
