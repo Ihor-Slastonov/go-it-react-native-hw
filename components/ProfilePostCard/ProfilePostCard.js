@@ -24,6 +24,8 @@ export const ProfilePostCard = ({
   const [count, setCount] = useState(null);
   const [isLike, setIsLike] = useState(false);
 
+  console.log(location)
+
   const onLike = async () => {
     setIsLike(!isLike);
 
@@ -88,7 +90,7 @@ export const ProfilePostCard = ({
           }}
         >
           <Feather name="map-pin" size={24} color="#BDBDBD" />
-          <Text style={styles.locationTitle}>{location}</Text>
+          <Text style={styles.locationTitle}>{location.slice(0,10)}</Text>
         </TouchableOpacity>
       </View>
     </View>
