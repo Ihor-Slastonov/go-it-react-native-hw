@@ -41,8 +41,9 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   comment: {
+    flex: 1,
     marginLeft: 16,
-    width: 320,
+
     padding: 16,
     backgroundColor: 'rgba(0, 0, 0, 0.03)',
     borderBottomLeftRadius: 6,
@@ -51,7 +52,8 @@ const styles = StyleSheet.create({
   },
   userComment: {
     marginRight: 16,
-    width: 320,
+    flex: 1,
+
     padding: 16,
     backgroundColor: 'rgba(0, 0, 0, 0.03)',
     borderBottomLeftRadius: 6,
