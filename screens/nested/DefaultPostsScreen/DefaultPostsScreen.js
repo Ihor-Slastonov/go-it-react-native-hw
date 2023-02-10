@@ -62,6 +62,7 @@ export const DefaultPostsScreen = ({ navigation }) => {
               coords={item.coords}
               postId={item.id}
               likes={item.like}
+              country={item.country}
             />
           )}
           keyExtractor={item => item.id}

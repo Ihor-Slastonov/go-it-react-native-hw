@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
 import {
-  collection, getCountFromServer, doc,
-  updateDoc, } from 'firebase/firestore';
+  collection,
+  getCountFromServer,
+  doc,
+  updateDoc,
+} from 'firebase/firestore';
 import { db } from '../../firebase/config';
 import { Image, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 //icons
@@ -15,7 +18,8 @@ export const PostsScreenCard = ({
   navigation,
   coords,
   postId,
-  likes
+  likes,
+  country,
 }) => {
   const [count, setCount] = useState(null);
   const [isLike, setIsLike] = useState(false);
@@ -61,10 +65,9 @@ export const PostsScreenCard = ({
             <Feather name="message-circle" size={24} color="#BDBDBD" />
           </TouchableOpacity>
           <Text style={styles.commentsQuantity}> {count}</Text>
-        </View>
         <TouchableOpacity
           onPress={onLike}
-          style={{ flexDirection: 'row', alignItems: 'center' }}
+          style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 24 }}
         >
           {isLike ? (
             <AntDesign name="like1" size={24} color="#FF6C00" />
@@ -73,6 +76,7 @@ export const PostsScreenCard = ({
           )}
           <Text style={styles.quantity}> {likes ? likes : 0}</Text>
         </TouchableOpacity>
+        </View>
         <View>
           <TouchableOpacity
             style={styles.location}
@@ -81,7 +85,7 @@ export const PostsScreenCard = ({
             }
           >
             <Feather name="map-pin" size={24} color="#BDBDBD" />
-            <Text style={styles.locationTitle}>{location}</Text>
+            <Text style={styles.locationTitle}>{country}</Text>
           </TouchableOpacity>
         </View>
       </View>

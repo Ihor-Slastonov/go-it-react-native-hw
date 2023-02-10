@@ -20,11 +20,12 @@ export const ProfilePostCard = ({
   coords,
   postId,
   likes,
+  country
 }) => {
   const [count, setCount] = useState(null);
   const [isLike, setIsLike] = useState(false);
 
-  console.log(location)
+  console.log(location.slice(0,10))
 
   const onLike = async () => {
     setIsLike(!isLike);
@@ -90,7 +91,7 @@ export const ProfilePostCard = ({
           }}
         >
           <Feather name="map-pin" size={24} color="#BDBDBD" />
-          <Text style={styles.locationTitle}>{location.slice(0,10)}</Text>
+          <Text style={styles.locationTitle}>{country}</Text>
         </TouchableOpacity>
       </View>
     </View>
