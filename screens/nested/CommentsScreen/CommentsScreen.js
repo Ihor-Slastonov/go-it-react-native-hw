@@ -63,6 +63,10 @@ export const CommentsScreen = ({ route }) => {
   const handleSetComment = text => setComment(text);
 
   const handleSubmit = async () => {
+    if (comment === '') {
+      alert('Cannot be empty comment');
+      return
+    }
     const date = new Date();
     const month = date.toLocaleString('default', { month: 'long' });
     const fullDate = `${date.getDate()} ${month} ${date.getFullYear()} | ${date.getHours()}:${date.getMinutes()}`;
