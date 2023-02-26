@@ -80,6 +80,7 @@ export const CreatePostScreen = ({ navigation }) => {
 
   const pickImage = async () => {
     try {
+      await getAddress();
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
         allowsEditing: true,
@@ -101,7 +102,7 @@ export const CreatePostScreen = ({ navigation }) => {
     );
   };
 
-  const getAddress = async () => {
+  async function getAddress() {
     try {
       const address = await Location.reverseGeocodeAsync({
         latitude: coords.coords.latitude,
@@ -112,7 +113,7 @@ export const CreatePostScreen = ({ navigation }) => {
     } catch (error) {
       console.log(error);
     }
-  };
+  }
 
   const takePhoto = async () => {
     try {
@@ -164,7 +165,7 @@ export const CreatePostScreen = ({ navigation }) => {
     }
   };
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     if (photo === null && location === '') {
       Toast.show({
         type: 'error',
@@ -172,7 +173,7 @@ export const CreatePostScreen = ({ navigation }) => {
       });
       return;
     }
-    uploadPost();
+    await uploadPost();
     navigation.navigate('DefaultScreen');
     resetPhotoState();
     setTitle('');

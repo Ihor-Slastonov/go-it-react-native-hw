@@ -20,12 +20,10 @@ export const ProfilePostCard = ({
   coords,
   postId,
   likes,
-  country
+  country,
 }) => {
   const [count, setCount] = useState(null);
   const [isLike, setIsLike] = useState(false);
-
-  console.log(location.slice(0,10))
 
   const onLike = async () => {
     setIsLike(!isLike);
